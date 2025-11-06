@@ -93,9 +93,8 @@ export default function StockDetailPage() {
       // Call the appropriate trading API based on market
       const tradeData = {
         symbol: symbol.toUpperCase(),
-        side: orderType.toUpperCase() as "BUY" | "SELL",
+        type: orderType.toUpperCase() as "BUY" | "SELL",
         quantity: parseFloat(quantity),
-        orderType: "MARKET" as const,
       };
 
       const response =
