@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { AlertTriangle, X, TrendingUp, TrendingDown } from 'lucide-react';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { AlertTriangle, X, TrendingUp, TrendingDown } from "lucide-react";
+import Link from "next/link";
 
 export default function RebalancingAlert() {
   const [rebalancingStatus, setRebalancingStatus] = useState<any>(null);
@@ -15,17 +15,20 @@ export default function RebalancingAlert() {
 
   const fetchRebalancingStatus = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/api/v1/portfolio/rebalancing-status', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "http://localhost:4000/api/v1/portfolio/rebalancing-status",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
         setRebalancingStatus(data.data);
       }
     } catch (err) {
-      console.error('Fetch rebalancing status error:', err);
+      console.error("Fetch rebalancing status error:", err);
     } finally {
       setLoading(false);
     }
@@ -43,9 +46,12 @@ export default function RebalancingAlert() {
         <div className="flex-1">
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h3 className="font-semibold text-text-primary">Portfolio Rebalancing Needed</h3>
+              <h3 className="font-semibold text-text-primary">
+                Portfolio Rebalancing Needed
+              </h3>
               <p className="text-sm text-text-secondary mt-1">
-                Your portfolio has drifted {rebalancingStatus.maxDrift}% from your target allocation
+                Your portfolio has drifted {rebalancingStatus.maxDrift}% from
+                your target allocation
               </p>
             </div>
             <button
@@ -96,29 +102,36 @@ export default function RebalancingAlert() {
           </div>
 
           {/* Suggestions */}
-          {rebalancingStatus.suggestions && rebalancingStatus.suggestions.length > 0 && (
-            <div className="space-y-2 mb-3">
-              <p className="text-xs font-medium text-text-primary">Suggested Actions:</p>
-              {rebalancingStatus.suggestions.map((suggestion: any, index: number) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between text-sm bg-surface-dark/30 rounded-lg p-2"
-                >
-                  <div className="flex items-center gap-2">
-                    {suggestion.action === 'BUY' ? (
-                      <TrendingUp className="w-4 h-4 text-green-500" />
-                    ) : (
-                      <TrendingDown className="w-4 h-4 text-red-500" />
-                    )}
-                    <span className="text-text-primary">
-                      {suggestion.action} {suggestion.category}
-                    </span>
-                  </div>
-                  <span className="font-semibold text-text-primary">${suggestion.amount}</span>
-                </div>
-              ))}
-            </div>
-          )}
+          {rebalancingStatus.suggestions &&
+            rebalancingStatus.suggestions.length > 0 && (
+              <div className="space-y-2 mb-3">
+                <p className="text-xs font-medium text-text-primary">
+                  Suggested Actions:
+                </p>
+                {rebalancingStatus.suggestions.map(
+                  (suggestion: any, index: number) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between text-sm bg-surface-dark/30 rounded-lg p-2"
+                    >
+                      <div className="flex items-center gap-2">
+                        {suggestion.action === "BUY" ? (
+                          <TrendingUp className="w-4 h-4 text-green-500" />
+                        ) : (
+                          <TrendingDown className="w-4 h-4 text-red-500" />
+                        )}
+                        <span className="text-text-primary">
+                          {suggestion.action} {suggestion.category}
+                        </span>
+                      </div>
+                      <span className="font-semibold text-text-primary">
+                        ${suggestion.amount}
+                      </span>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
 
           {/* CTA */}
           <div className="flex gap-2">

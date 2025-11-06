@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/stocks/layout,_N_T_/stocks/nigerian/layout,_N_T_/stocks/nigerian/page,_N_T_/stocks/nigerian"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/stocks/nigerian/__PAGE__",
+    "/stocks/nigerian",
+    "/stocks",
+    "/_index"
+  ]
+}

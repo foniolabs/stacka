@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { 
-  User, 
-  Bell, 
-  Shield, 
-  Globe, 
-  Moon, 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  User,
+  Bell,
+  Shield,
+  Globe,
+  Moon,
   Smartphone,
   Lock,
   Mail,
   ChevronRight,
   LogOut,
-  Sparkles
-} from 'lucide-react';
-import { useAuthStore } from '@/store/authStore';
-import Header from '@/components/layout/Header';
-import MobileNav from '@/components/layout/MobileNav';
-import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
-import toast from 'react-hot-toast';
+  Sparkles,
+} from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
+import Header from "@/components/layout/Header";
+import MobileNav from "@/components/layout/MobileNav";
+import Card from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import toast from "react-hot-toast";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -34,61 +34,61 @@ export default function SettingsPage() {
 
   const handleLogout = () => {
     logout();
-    toast.success('Logged out successfully');
-    router.push('/login');
+    toast.success("Logged out successfully");
+    router.push("/login");
   };
 
   const settingsSections = [
     {
-      title: 'Account',
+      title: "Account",
       items: [
         {
           icon: <User className="w-5 h-5" />,
-          label: 'Profile Information',
-          description: 'Update your personal details',
-          onClick: () => router.push('/profile'),
+          label: "Profile Information",
+          description: "Update your personal details",
+          onClick: () => router.push("/profile"),
         },
         {
           icon: <Mail className="w-5 h-5" />,
-          label: 'Email',
-          description: user?.email || 'Not set',
+          label: "Email",
+          description: user?.email || "Not set",
           onClick: () => {},
         },
         {
           icon: <Lock className="w-5 h-5" />,
-          label: 'Change Password',
-          description: 'Update your password',
-          onClick: () => toast('Coming soon!'),
+          label: "Change Password",
+          description: "Update your password",
+          onClick: () => toast("Coming soon!"),
         },
       ],
     },
     {
-      title: 'Automation',
+      title: "Automation",
       items: [
         {
           icon: <Sparkles className="w-5 h-5" />,
-          label: 'Smart Split Preferences',
-          description: 'Configure your auto-invest allocation',
-          onClick: () => router.push('/smart-split'),
+          label: "Smart Split Preferences",
+          description: "Configure your auto-invest allocation",
+          onClick: () => router.push("/smart-split"),
         },
       ],
     },
     {
-      title: 'Notifications',
+      title: "Notifications",
       items: [
         {
           icon: <Bell className="w-5 h-5" />,
-          label: 'Price Alerts',
-          description: 'Get notified about price changes',
+          label: "Price Alerts",
+          description: "Get notified about price changes",
           toggle: true,
           value: notifications.priceAlerts,
-          onChange: (value: boolean) => 
+          onChange: (value: boolean) =>
             setNotifications({ ...notifications, priceAlerts: value }),
         },
         {
           icon: <Bell className="w-5 h-5" />,
-          label: 'Trade Confirmations',
-          description: 'Receive trade confirmations',
+          label: "Trade Confirmations",
+          description: "Receive trade confirmations",
           toggle: true,
           value: notifications.tradeConfirmations,
           onChange: (value: boolean) =>
@@ -96,8 +96,8 @@ export default function SettingsPage() {
         },
         {
           icon: <Bell className="w-5 h-5" />,
-          label: 'News Updates',
-          description: 'Market news and updates',
+          label: "News Updates",
+          description: "Market news and updates",
           toggle: true,
           value: notifications.newsUpdates,
           onChange: (value: boolean) =>
@@ -105,8 +105,8 @@ export default function SettingsPage() {
         },
         {
           icon: <Mail className="w-5 h-5" />,
-          label: 'Marketing Emails',
-          description: 'Promotional content',
+          label: "Marketing Emails",
+          description: "Promotional content",
           toggle: true,
           value: notifications.marketingEmails,
           onChange: (value: boolean) =>
@@ -115,36 +115,36 @@ export default function SettingsPage() {
       ],
     },
     {
-      title: 'Security',
+      title: "Security",
       items: [
         {
           icon: <Shield className="w-5 h-5" />,
-          label: 'Two-Factor Authentication',
-          description: 'Not enabled',
-          onClick: () => toast('Coming soon!'),
+          label: "Two-Factor Authentication",
+          description: "Not enabled",
+          onClick: () => toast("Coming soon!"),
         },
         {
           icon: <Smartphone className="w-5 h-5" />,
-          label: 'Trusted Devices',
-          description: 'Manage your devices',
-          onClick: () => toast('Coming soon!'),
+          label: "Trusted Devices",
+          description: "Manage your devices",
+          onClick: () => toast("Coming soon!"),
         },
       ],
     },
     {
-      title: 'Preferences',
+      title: "Preferences",
       items: [
         {
           icon: <Globe className="w-5 h-5" />,
-          label: 'Language',
-          description: 'English (US)',
-          onClick: () => toast('Coming soon!'),
+          label: "Language",
+          description: "English (US)",
+          onClick: () => toast("Coming soon!"),
         },
         {
           icon: <Moon className="w-5 h-5" />,
-          label: 'Theme',
-          description: 'Dark Mode',
-          onClick: () => toast('Coming soon!'),
+          label: "Theme",
+          description: "Dark Mode",
+          onClick: () => toast("Coming soon!"),
         },
       ],
     },
@@ -160,7 +160,8 @@ export default function SettingsPage() {
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent-blue flex items-center justify-center">
               <span className="text-2xl font-bold text-black">
-                {user?.firstName?.[0]}{user?.lastName?.[0]}
+                {user?.firstName?.[0]}
+                {user?.lastName?.[0]}
               </span>
             </div>
             <div>
@@ -224,19 +225,19 @@ export default function SettingsPage() {
               <p className="font-medium">1.0.0</p>
             </div>
             <button
-              onClick={() => toast('Coming soon!')}
+              onClick={() => toast("Coming soon!")}
               className="w-full p-4 text-left hover:bg-background-hover transition-colors"
             >
               <p className="font-medium">Terms of Service</p>
             </button>
             <button
-              onClick={() => toast('Coming soon!')}
+              onClick={() => toast("Coming soon!")}
               className="w-full p-4 text-left hover:bg-background-hover transition-colors"
             >
               <p className="font-medium">Privacy Policy</p>
             </button>
             <button
-              onClick={() => toast('Coming soon!')}
+              onClick={() => toast("Coming soon!")}
               className="w-full p-4 text-left hover:bg-background-hover transition-colors"
             >
               <p className="font-medium">Help & Support</p>

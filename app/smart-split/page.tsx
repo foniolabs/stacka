@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { ArrowLeft, Save, Trash2, Info } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { ArrowLeft, Save, Trash2, Info } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface AllocationBreakdown {
   [key: string]: number;
@@ -23,8 +23,8 @@ export default function SmartSplitPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   // Main allocation percentages
   const [nigerianPercent, setNigerianPercent] = useState(40);
@@ -56,12 +56,15 @@ export default function SmartSplitPage() {
   const loadPreferences = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/api/v1/allocation/preferences', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "http://localhost:4000/api/v1/allocation/preferences",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await response.json();
       if (data.success && data.data.preference) {
@@ -90,43 +93,55 @@ export default function SmartSplitPage() {
         }
       }
     } catch (err: any) {
-      console.error('Load preferences error:', err);
+      console.error("Load preferences error:", err);
     } finally {
       setLoading(false);
     }
   };
 
   const savePreferences = async () => {
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     // Validation
     if (Math.abs(totalPercent - 100) > 0.01) {
-      setError(`Total allocation must equal 100%. Current: ${totalPercent.toFixed(1)}%`);
+      setError(
+        `Total allocation must equal 100%. Current: ${totalPercent.toFixed(1)}%`
+      );
       return;
     }
 
     if (nigerianPercent > 0 && Math.abs(nigerianSubTotal - 100) > 0.01) {
-      setError(`Nigerian stocks breakdown must equal 100%. Current: ${nigerianSubTotal.toFixed(1)}%`);
+      setError(
+        `Nigerian stocks breakdown must equal 100%. Current: ${nigerianSubTotal.toFixed(
+          1
+        )}%`
+      );
       return;
     }
 
     if (usPercent > 0 && Math.abs(usSubTotal - 100) > 0.01) {
-      setError(`US stocks breakdown must equal 100%. Current: ${usSubTotal.toFixed(1)}%`);
+      setError(
+        `US stocks breakdown must equal 100%. Current: ${usSubTotal.toFixed(
+          1
+        )}%`
+      );
       return;
     }
 
     if (defiPercent > 0 && Math.abs(defiSubTotal - 100) > 0.01) {
-      setError(`DeFi breakdown must equal 100%. Current: ${defiSubTotal.toFixed(1)}%`);
+      setError(
+        `DeFi breakdown must equal 100%. Current: ${defiSubTotal.toFixed(1)}%`
+      );
       return;
     }
 
     try {
       setSaving(true);
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
       const payload: AllocationPreference = {
-        name: 'My Smart Split',
+        name: "My Smart Split",
         nigerianPercent,
         defiPercent,
         usPercent,
@@ -145,44 +160,53 @@ export default function SmartSplitPage() {
         },
       };
 
-      const response = await fetch('http://localhost:4000/api/v1/allocation/preferences', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/v1/allocation/preferences",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
-        setSuccess('Smart Split preferences saved successfully! 🎉');
-        setTimeout(() => router.push('/dashboard'), 2000);
+        setSuccess("Smart Split preferences saved successfully! 🎉");
+        setTimeout(() => router.push("/dashboard"), 2000);
       } else {
-        setError(data.message || 'Failed to save preferences');
+        setError(data.message || "Failed to save preferences");
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to save preferences');
+      setError(err.message || "Failed to save preferences");
     } finally {
       setSaving(false);
     }
   };
 
   const deletePreferences = async () => {
-    if (!confirm('Are you sure you want to delete your Smart Split preferences?')) return;
+    if (
+      !confirm("Are you sure you want to delete your Smart Split preferences?")
+    )
+      return;
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/api/v1/allocation/preferences', {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "http://localhost:4000/api/v1/allocation/preferences",
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
-        setSuccess('Preferences deleted');
+        setSuccess("Preferences deleted");
         // Reset to defaults
         setNigerianPercent(40);
         setDefiPercent(30);
@@ -196,7 +220,7 @@ export default function SmartSplitPage() {
         setCompoundPercent(50);
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to delete preferences');
+      setError(err.message || "Failed to delete preferences");
     }
   };
 
@@ -221,7 +245,9 @@ export default function SmartSplitPage() {
               <ArrowLeft className="w-5 h-5 text-text-primary" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-text-primary">Smart Split</h1>
+              <h1 className="text-2xl font-bold text-text-primary">
+                Smart Split
+              </h1>
               <p className="text-text-secondary text-sm">
                 Set your preferred allocation and invest with one click
               </p>
@@ -241,8 +267,9 @@ export default function SmartSplitPage() {
           <div className="text-sm text-text-primary">
             <p className="font-medium mb-1">How Smart Split Works</p>
             <p className="text-text-secondary">
-              Set your ideal allocation once. Every time you deposit funds, just tap "Use Smart Split" and
-              we'll automatically invest across all your preferred assets in the exact ratios you've set.
+              Set your ideal allocation once. Every time you deposit funds, just
+              tap "Use Smart Split" and we'll automatically invest across all
+              your preferred assets in the exact ratios you've set.
             </p>
           </div>
         </div>
@@ -261,13 +288,19 @@ export default function SmartSplitPage() {
 
         {/* Main Allocation */}
         <div className="bg-surface rounded-xl p-6 mb-6">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Main Allocation</h2>
+          <h2 className="text-lg font-semibold text-text-primary mb-4">
+            Main Allocation
+          </h2>
           <div className="space-y-6">
             {/* Nigerian */}
             <div>
               <div className="flex justify-between mb-2">
-                <label className="text-text-primary font-medium">Nigerian Stocks</label>
-                <span className="text-primary font-bold">{nigerianPercent}%</span>
+                <label className="text-text-primary font-medium">
+                  Nigerian Stocks
+                </label>
+                <span className="text-primary font-bold">
+                  {nigerianPercent}%
+                </span>
               </div>
               <input
                 type="range"
@@ -282,7 +315,9 @@ export default function SmartSplitPage() {
             {/* DeFi */}
             <div>
               <div className="flex justify-between mb-2">
-                <label className="text-text-primary font-medium">DeFi Yields</label>
+                <label className="text-text-primary font-medium">
+                  DeFi Yields
+                </label>
                 <span className="text-primary font-bold">{defiPercent}%</span>
               </div>
               <input
@@ -298,7 +333,9 @@ export default function SmartSplitPage() {
             {/* US */}
             <div>
               <div className="flex justify-between mb-2">
-                <label className="text-text-primary font-medium">US Stocks</label>
+                <label className="text-text-primary font-medium">
+                  US Stocks
+                </label>
                 <span className="text-primary font-bold">{usPercent}%</span>
               </div>
               <input
@@ -317,7 +354,9 @@ export default function SmartSplitPage() {
                 <span className="text-text-primary font-semibold">Total</span>
                 <span
                   className={`font-bold ${
-                    Math.abs(totalPercent - 100) < 0.01 ? 'text-green-500' : 'text-red-500'
+                    Math.abs(totalPercent - 100) < 0.01
+                      ? "text-green-500"
+                      : "text-red-500"
                   }`}
                 >
                   {totalPercent.toFixed(1)}%
@@ -330,12 +369,16 @@ export default function SmartSplitPage() {
         {/* Nigerian Stocks Breakdown */}
         {nigerianPercent > 0 && (
           <div className="bg-surface rounded-xl p-6 mb-6">
-            <h2 className="text-lg font-semibold text-text-primary mb-4">Nigerian Stocks Breakdown</h2>
+            <h2 className="text-lg font-semibold text-text-primary mb-4">
+              Nigerian Stocks Breakdown
+            </h2>
             <div className="space-y-6">
               <div>
                 <div className="flex justify-between mb-2">
                   <label className="text-text-primary">Dangote Cement</label>
-                  <span className="text-primary font-bold">{dangotePercent}%</span>
+                  <span className="text-primary font-bold">
+                    {dangotePercent}%
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -379,10 +422,14 @@ export default function SmartSplitPage() {
 
               <div className="pt-4 border-t border-border">
                 <div className="flex justify-between">
-                  <span className="text-text-primary font-semibold">Subtotal</span>
+                  <span className="text-text-primary font-semibold">
+                    Subtotal
+                  </span>
                   <span
                     className={`font-bold ${
-                      Math.abs(nigerianSubTotal - 100) < 0.01 ? 'text-green-500' : 'text-red-500'
+                      Math.abs(nigerianSubTotal - 100) < 0.01
+                        ? "text-green-500"
+                        : "text-red-500"
                     }`}
                   >
                     {nigerianSubTotal.toFixed(1)}%
@@ -396,12 +443,16 @@ export default function SmartSplitPage() {
         {/* US Stocks Breakdown */}
         {usPercent > 0 && (
           <div className="bg-surface rounded-xl p-6 mb-6">
-            <h2 className="text-lg font-semibold text-text-primary mb-4">US Stocks Breakdown</h2>
+            <h2 className="text-lg font-semibold text-text-primary mb-4">
+              US Stocks Breakdown
+            </h2>
             <div className="space-y-6">
               <div>
                 <div className="flex justify-between mb-2">
                   <label className="text-text-primary">Apple (AAPL)</label>
-                  <span className="text-primary font-bold">{applePercent}%</span>
+                  <span className="text-primary font-bold">
+                    {applePercent}%
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -430,10 +481,14 @@ export default function SmartSplitPage() {
 
               <div className="pt-4 border-t border-border">
                 <div className="flex justify-between">
-                  <span className="text-text-primary font-semibold">Subtotal</span>
+                  <span className="text-text-primary font-semibold">
+                    Subtotal
+                  </span>
                   <span
                     className={`font-bold ${
-                      Math.abs(usSubTotal - 100) < 0.01 ? 'text-green-500' : 'text-red-500'
+                      Math.abs(usSubTotal - 100) < 0.01
+                        ? "text-green-500"
+                        : "text-red-500"
                     }`}
                   >
                     {usSubTotal.toFixed(1)}%
@@ -447,7 +502,9 @@ export default function SmartSplitPage() {
         {/* DeFi Breakdown */}
         {defiPercent > 0 && (
           <div className="bg-surface rounded-xl p-6 mb-6">
-            <h2 className="text-lg font-semibold text-text-primary mb-4">DeFi Yields Breakdown</h2>
+            <h2 className="text-lg font-semibold text-text-primary mb-4">
+              DeFi Yields Breakdown
+            </h2>
             <div className="space-y-6">
               <div>
                 <div className="flex justify-between mb-2">
@@ -467,7 +524,9 @@ export default function SmartSplitPage() {
               <div>
                 <div className="flex justify-between mb-2">
                   <label className="text-text-primary">Compound Finance</label>
-                  <span className="text-primary font-bold">{compoundPercent}%</span>
+                  <span className="text-primary font-bold">
+                    {compoundPercent}%
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -481,10 +540,14 @@ export default function SmartSplitPage() {
 
               <div className="pt-4 border-t border-border">
                 <div className="flex justify-between">
-                  <span className="text-text-primary font-semibold">Subtotal</span>
+                  <span className="text-text-primary font-semibold">
+                    Subtotal
+                  </span>
                   <span
                     className={`font-bold ${
-                      Math.abs(defiSubTotal - 100) < 0.01 ? 'text-green-500' : 'text-red-500'
+                      Math.abs(defiSubTotal - 100) < 0.01
+                        ? "text-green-500"
+                        : "text-red-500"
                     }`}
                   >
                     {defiSubTotal.toFixed(1)}%
@@ -502,7 +565,7 @@ export default function SmartSplitPage() {
           className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-2 transition"
         >
           <Save className="w-5 h-5" />
-          {saving ? 'Saving...' : 'Save Smart Split Preferences'}
+          {saving ? "Saving..." : "Save Smart Split Preferences"}
         </button>
       </div>
     </div>

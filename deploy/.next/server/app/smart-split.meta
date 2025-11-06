@@ -1,0 +1,14 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/smart-split/layout,_N_T_/smart-split/page,_N_T_/smart-split"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/smart-split/__PAGE__",
+    "/smart-split",
+    "/_index"
+  ]
+}

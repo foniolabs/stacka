@@ -3,31 +3,31 @@ name: Deploy to Hostinger
 on:
   push:
     branches:
-      - main  # Deploy when pushing to main branch
-  workflow_dispatch:  # Allow manual deployment from Actions tab
+      - main # Deploy when pushing to main branch
+  workflow_dispatch: # Allow manual deployment from Actions tab
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
-        
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
-          
+          node-version: "18"
+          cache: "npm"
+
       - name: 📦 Install dependencies
         run: npm ci
-        
+
       - name: 🔨 Build Next.js app
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
         run: npm run build
-        
+
       - name: 📁 Create deployment package
         run: |
           mkdir -p deploy
@@ -36,22 +36,22 @@ jobs:
           cp package.json deploy/
           cp package-lock.json deploy/ 2>/dev/null || true
           cp next.config.ts deploy/
-          
+
       - name: 🗜️ Create zip archive
         run: |
           cd deploy
           zip -r ../stacka-frontend-${{ github.sha }}.zip . -x "*.git*" -x "*node_modules*"
           cd ..
-          
+
       - name: 📤 Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: stacka-frontend-${{ github.sha }}
           path: stacka-frontend-${{ github.sha }}.zip
           retention-days: 30
-          
+
       - name: 🚀 Deploy to Hostinger via FTP
-        if: github.event_name == 'push'  # Only auto-deploy on push, not manual workflow
+        if: github.event_name == 'push' # Only auto-deploy on push, not manual workflow
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -63,7 +63,7 @@ jobs:
             **/.git*
             **/.git*/**
             **/node_modules/**
-            
+
       - name: ✅ Deployment Summary
         run: |
           echo "### 🎉 Deployment Summary" >> $GITHUB_STEP_SUMMARY
