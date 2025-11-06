@@ -1,0 +1,21 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/dashboard/page": "/dashboard",
+  "/favicon.ico/route": "/favicon.ico",
+  "/login/page": "/login",
+  "/page": "/",
+  "/portfolio/page": "/portfolio",
+  "/profile/page": "/profile",
+  "/settings/page": "/settings",
+  "/signup/page": "/signup",
+  "/smart-split/page": "/smart-split",
+  "/stocks/[symbol]/page": "/stocks/[symbol]",
+  "/stocks/nigerian/page": "/stocks/nigerian",
+  "/stocks/us/page": "/stocks/us",
+  "/test-api/page": "/test-api",
+  "/trade/page": "/trade",
+  "/wallet/page": "/wallet",
+  "/yield/[protocol]/page": "/yield/[protocol]",
+  "/yield/page": "/yield"
+}

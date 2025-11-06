@@ -1,0 +1,21 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/portfolio/page": "app/portfolio/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/settings/page": "app/settings/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/smart-split/page": "app/smart-split/page.js",
+  "/stocks/[symbol]/page": "app/stocks/[symbol]/page.js",
+  "/stocks/nigerian/page": "app/stocks/nigerian/page.js",
+  "/stocks/us/page": "app/stocks/us/page.js",
+  "/test-api/page": "app/test-api/page.js",
+  "/trade/page": "app/trade/page.js",
+  "/wallet/page": "app/wallet/page.js",
+  "/yield/[protocol]/page": "app/yield/[protocol]/page.js",
+  "/yield/page": "app/yield/page.js"
+}
