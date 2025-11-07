@@ -1,77 +1,79 @@
+# .github/workflows/deploy.yml
 name: Deploy to Hostinger
 
 on:
   push:
-    branches:
-      - main # Deploy when pushing to main branch
-  workflow_dispatch: # Allow manual deployment from Actions tab
+    branches: [ main, master ]  # Deploy when pushing to main or master branch
+  workflow_dispatch:  # Allow manual deployment
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 🔧 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 🔨 Build Next.js app
-        env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-        run: npm run build
-
-      - name: 📁 Create deployment package
-        run: |
-          mkdir -p deploy
-          cp -r .next deploy/
-          cp -r public deploy/ 2>/dev/null || echo "No public folder"
-          cp package.json deploy/
-          cp package-lock.json deploy/ 2>/dev/null || true
-          cp next.config.ts deploy/
-
-      - name: 🗜️ Create zip archive
-        run: |
-          cd deploy
-          zip -r ../stacka-frontend-${{ github.sha }}.zip . -x "*.git*" -x "*node_modules*"
-          cd ..
-
-      - name: 📤 Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: stacka-frontend-${{ github.sha }}
-          path: stacka-frontend-${{ github.sha }}.zip
-          retention-days: 30
-
-      - name: 🚀 Deploy to Hostinger via FTP
-        if: github.event_name == 'push' # Only auto-deploy on push, not manual workflow
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: 145.14.153.30
-          username: u879909074.stacka.xyz
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          local-dir: ./deploy/
-          server-dir: /public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-
-      - name: ✅ Deployment Summary
-        run: |
-          echo "### 🎉 Deployment Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Build Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
-          echo "- **Artifact**: stacka-frontend-${{ github.sha }}.zip" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Download the deployment package from the Artifacts section above." >> $GITHUB_STEP_SUMMARY
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: npm ci
+      
+    - name: 🔨 Build Next.js application
+      env:
+        NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+      run: npm run build
+      
+    - name: 📁 Create deployment package
+      run: |
+        mkdir -p deploy
+        cp -r .next deploy/
+        cp -r public deploy/ 2>/dev/null || echo "No public folder"
+        cp package.json deploy/
+        cp package-lock.json deploy/ 2>/dev/null || true
+        cp next.config.ts deploy/
+        echo "Created deployment package"
+        ls -la deploy/
+    
+    - name: 🗜️ Create zip archive (backup)
+      run: |
+        cd deploy
+        zip -r ../stacka-frontend-${{ github.sha }}.zip . -x "*.git*" -x "*node_modules*"
+        cd ..
+        
+    - name: 📤 Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: stacka-frontend-${{ github.sha }}
+        path: stacka-frontend-${{ github.sha }}.zip
+        retention-days: 30
+      
+    - name: 🚀 Deploy to Hostinger via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_HOST }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./deploy/
+        server-dir: ./public_html/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          .github/**
+        
+    - name: ✅ Deployment Summary
+      run: |
+        echo "### 🎉 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
+        echo "- **Artifact**: stacka-frontend-${{ github.sha }}.zip" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Deployment completed successfully!" >> $GITHUB_STEP_SUMMARY
+        echo "🌐 Your website should now be live at stacka.xyz" >> $GITHUB_STEP_SUMMARY
