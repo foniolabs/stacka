@@ -54,9 +54,10 @@ jobs:
         if: github.event_name == 'push' # Only auto-deploy on push, not manual workflow
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: 145.14.153.30
+          username: u879909074.stacka.xyz
           password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
           local-dir: ./deploy/
           server-dir: /public_html/
           exclude: |
