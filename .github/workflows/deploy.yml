@@ -53,6 +53,7 @@ jobs:
         retention-days: 30
       
     - name: 🚀 Deploy to Hostinger via FTP
+      continue-on-error: true  # Don't fail the workflow if FTP secrets aren't configured
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_HOST }}
