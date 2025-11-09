@@ -63,7 +63,7 @@ export default function DepositModal({
             >
               <WalletIcon className="w-5 h-5 mx-auto mb-1" />
               <p className="text-sm font-semibold">Crypto</p>
-              <p className="text-xs text-text-tertiary">USDC on Base</p>
+              <p className="text-xs text-text-tertiary">USDC on Base Mainnet</p>
             </button>
 
             <button
@@ -83,14 +83,14 @@ export default function DepositModal({
           {/* Crypto Deposit */}
           {depositType === "crypto" && (
             <div className="space-y-3">
-              <div className="bg-accent-blue/10 border border-accent-blue/20 rounded-lg p-2.5">
-                <p className="text-xs text-accent-blue font-semibold mb-1">
-                  Deposit USDC to this address
+              <div className="bg-accent-green/10 border border-accent-green/20 rounded-lg p-2.5">
+                <p className="text-xs text-accent-green font-semibold mb-1">
+                  Gasless Deposits
                 </p>
                 <p className="text-xs text-text-secondary">
-                  Only send USDC on Base Sepolia network to this address.
-                  Sending other tokens or using wrong network will result in
-                  permanent loss.
+                  Send USDC on Base Mainnet to this address. No gas fees
+                  required! Multi-chain support with automatic conversion to NGN
+                  available.
                 </p>
               </div>
 
@@ -135,14 +135,12 @@ export default function DepositModal({
               <div className="bg-background-hover border border-border rounded-lg p-2.5 space-y-1.5">
                 <p className="text-xs font-semibold">Important Notes:</p>
                 <ul className="text-xs text-text-secondary space-y-0.5">
-                  <li>• Network: Base Sepolia Testnet</li>
+                  <li>• Network: Base Mainnet (Production)</li>
                   <li>• Asset: USDC only</li>
-                  <li>• Minimum deposit: $1</li>
-                  <li>• Deposits typically arrive in 1-5 minutes</li>
-                  <li>
-                    • Click "Refresh Balance" on wallet page to check for
-                    deposits
-                  </li>
+                  <li>• Gasless: No gas fees required</li>
+                  <li>• Deposits arrive in 1-5 minutes</li>
+                  <li>• Multi-chain: Supports Base & Solana</li>
+                  <li>• Click "Refresh Balance" to check deposits</li>
                 </ul>
               </div>
             </div>

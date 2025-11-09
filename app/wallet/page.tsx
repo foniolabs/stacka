@@ -25,12 +25,12 @@ import DepositModal from "@/components/modals/DepositModal";
 import WithdrawModal from "@/components/modals/WithdrawModal";
 
 const CHAINS = [
-  { name: "Base Sepolia", chainId: 84532, recommended: true, testnet: true },
-  { name: "Base", chainId: 8453, disabled: true },
+  { name: "Base Mainnet", chainId: 8453, recommended: true, mainnet: true },
   { name: "Ethereum", chainId: 1, disabled: true },
   { name: "Polygon", chainId: 137, disabled: true },
   { name: "Arbitrum", chainId: 42161, disabled: true },
   { name: "Optimism", chainId: 10, disabled: true },
+  { name: "Solana", chainId: 0, disabled: true },
 ];
 
 export default function WalletPage() {
@@ -45,7 +45,7 @@ export default function WalletPage() {
     fetchBalance,
     fetchDepositAddress,
   } = useWalletStore();
-  const [selectedChain, setSelectedChain] = useState("Base Sepolia");
+  const [selectedChain, setSelectedChain] = useState("Base Mainnet");
   const [copied, setCopied] = useState(false);
   const [yieldData, setYieldData] = useState<any[]>([]);
   const [loadingYield, setLoadingYield] = useState(false);
@@ -218,7 +218,7 @@ export default function WalletPage() {
                 >
                   {chain.recommended && (
                     <span className="absolute -top-2 left-1/2 -translate-x-1/2 text-xs px-2 py-0.5 rounded-full bg-primary text-black font-semibold">
-                      Testnet
+                      Recommended
                     </span>
                   )}
                   <div className="flex items-center justify-center">
@@ -268,15 +268,17 @@ export default function WalletPage() {
                 </div>
               </div>
 
-              <div className="bg-accent-blue/10 border border-accent-blue/20 rounded-xl p-4">
-                <p className="text-sm text-accent-blue mb-2 font-semibold">
-                  Important
+              <div className="bg-accent-green/10 border border-accent-green/20 rounded-xl p-4">
+                <p className="text-sm text-accent-green mb-2 font-semibold flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  Deposit Information
                 </p>
                 <ul className="text-xs text-text-secondary space-y-1">
-                  <li>• Only send USDC on {selectedChain} network</li>
-                  <li>• Minimum deposit: $10</li>
+                  <li>• Send USDC on {selectedChain}</li>
+                  <li>• Gasless transactions - no gas fees required</li>
+                  <li>• Automatic USDC → NGN conversion available</li>
+                  <li>• Multi-chain support (Base & Solana)</li>
                   <li>• Funds typically arrive in 1-5 minutes</li>
-                  <li>• Sending other tokens may result in permanent loss</li>
                 </ul>
               </div>
             </div>
