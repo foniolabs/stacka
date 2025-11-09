@@ -21,6 +21,7 @@ import Button from "@/components/ui/Button";
 import SmartSplitModal from "@/components/features/SmartSplitModal";
 import { formatCurrency, formatPercentage, getChangeColor } from "@/lib/utils";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function DashboardPage() {
       }
     } catch (error) {
       console.error("Failed to fetch yield opportunities:", error);
+      // Silent fail on dashboard - data is optional
     } finally {
       setLoadingYield(false);
     }
@@ -95,6 +97,7 @@ export default function DashboardPage() {
       if (usResponse?.data?.stocks) setUSStocks(usResponse.data.stocks);
     } catch (error) {
       console.error("Failed to fetch stocks:", error);
+      // Silent fail on dashboard - data is optional
     } finally {
       setLoadingStocks(false);
     }
@@ -137,17 +140,11 @@ export default function DashboardPage() {
             </span>
             <span className="text-xs text-text-secondary">All Time</span>
           </div>
-          <div className="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-4 text-sm">
+          <div className="mt-3 pt-3 border-t border-white/10 text-sm">
             <div>
-              <p className="text-text-tertiary text-xs">Investments</p>
+              <p className="text-text-tertiary text-xs">Total Investments</p>
               <p className="font-semibold">
                 {formatCurrency(investmentsValue)}
-              </p>
-            </div>
-            <div>
-              <p className="text-text-tertiary text-xs">Cash</p>
-              <p className="font-semibold text-accent-green">
-                {formatCurrency(cashBalance)}
               </p>
             </div>
           </div>
@@ -165,7 +162,7 @@ export default function DashboardPage() {
             </Card>
           </Link>
 
-          <button onClick={() => setShowSmartSplit(true)} className="w-full">
+          <button onClick={() => setShowSmartSplit(true)}>
             <Card hover className="text-center py-4 cursor-pointer">
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center mx-auto mb-2">
                 <Sparkles className="w-5 h-5 text-white" />
