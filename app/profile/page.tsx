@@ -236,7 +236,7 @@ export default function ProfilePage() {
               <Shield className="w-5 h-5 text-text-secondary" />
               <div className="flex-1">
                 <p className="text-sm text-text-secondary">
-                  Wallet Address (Base Sepolia Testnet)
+                  Wallet Address (Base Mainnet)
                 </p>
                 <p className="font-mono text-sm font-semibold break-all">
                   {user?.walletAddress || "Not generated"}

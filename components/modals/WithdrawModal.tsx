@@ -186,7 +186,7 @@ export default function WithdrawModal({
                   Network Information
                 </p>
                 <ul className="text-xs text-text-secondary space-y-0.5">
-                  <li>• Network: Base Sepolia Testnet</li>
+                  <li>• Network: Base Mainnet</li>
                   <li>• Asset: USDC</li>
                   <li>• Estimated time: 1-3 minutes</li>
                   <li>• Gas fees: Covered by platform</li>
