@@ -52,6 +52,9 @@ export default function LandingHeader() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
+            <a href="/whitepaper" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost">White Paper</Button>
+            </a>
             <Link href="/login">
               <Button variant="ghost">Login</Button>
             </Link>
@@ -105,6 +108,9 @@ export default function LandingHeader() {
               About
             </Link>
             <div className="flex flex-col gap-2 pt-4">
+              <a href="/whitepaper" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="w-full">White Paper</Button>
+              </a>
               <Link href="/login">
                 <Button variant="ghost" className="w-full">
                   Login
