@@ -37,7 +37,7 @@ export default function Home() {
             {/* Subheading */}
             <p className="text-2xl md:text-3xl font-semibold text-text-secondary max-w-3xl mx-auto">
               One platform for stocks, crypto & DeFi.<br />
-              Built for the <span className="text-primary">crypto natives</span>.
+              Built for <span className="text-primary">young wealth builders</span>.
             </p>
 
             {/* CTA Button */}
@@ -190,6 +190,58 @@ export default function Home() {
                 </div>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Waitlist Section */}
+      <section className="py-24 px-4 bg-gradient-to-b from-black via-primary/5 to-black">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block mb-6">
+            <span className="bg-primary/20 text-primary px-6 py-2 rounded-full font-bold text-sm tracking-wide">
+              LAUNCHING SOON
+            </span>
+          </div>
+
+          <h2 className="font-outfit text-4xl md:text-6xl font-black mb-6">
+            <span className="text-white">JOIN THE</span>{' '}
+            <span className="text-primary">WAITLIST</span>
+          </h2>
+
+          <p className="text-lg md:text-xl text-text-secondary mb-12 max-w-2xl mx-auto">
+            Be among the first to experience the future of investing. Get early access and exclusive benefits.
+          </p>
+
+          <Link href="/waitlist">
+            <Button variant="primary" size="lg" className="text-xl px-12 py-6 font-bold shadow-glow">
+              JOIN WAITLIST
+              <ArrowRight className="ml-2 w-6 h-6" strokeWidth={3} />
+            </Button>
+          </Link>
+
+          {/* Benefits */}
+          <div className="grid md:grid-cols-3 gap-6 mt-16">
+            <div className="bg-background-card border border-border-primary rounded-xl p-6">
+              <div className="text-4xl mb-3">⚡</div>
+              <h3 className="text-white font-bold mb-2">Early Access</h3>
+              <p className="text-text-secondary text-sm">
+                Get priority access before public launch
+              </p>
+            </div>
+            <div className="bg-background-card border border-border-primary rounded-xl p-6">
+              <div className="text-4xl mb-3">🎁</div>
+              <h3 className="text-white font-bold mb-2">Exclusive Perks</h3>
+              <p className="text-text-secondary text-sm">
+                Special bonuses for early adopters
+              </p>
+            </div>
+            <div className="bg-background-card border border-border-primary rounded-xl p-6">
+              <div className="text-4xl mb-3">📢</div>
+              <h3 className="text-white font-bold mb-2">Launch Updates</h3>
+              <p className="text-text-secondary text-sm">
+                Stay informed about our progress
+              </p>
+            </div>
           </div>
         </div>
       </section>

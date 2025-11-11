@@ -198,7 +198,7 @@ export default function FeaturesPage() {
           <div className="p-6 border border-border-primary rounded-lg hover:border-primary hover:bg-background-elevated transition-all">
             <p className="text-text-secondary">
               For the full technical and business description see the{" "}
-              <a href="/whitepaper" className="text-primary hover:underline font-medium">
+              <a href="/whitepaper.html" className="text-primary hover:underline font-medium">
                 whitepaper
               </a>
               .

@@ -14,12 +14,7 @@ export default function LandingHeader() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <img
-              src="/stacka-logo.svg"
-              alt="Stacka Logo"
-              className="h-10 w-auto"
-            />
-            <span className="text-2xl font-bold text-white">STACKA</span>
+            <img src="/logo.svg" alt="Stacka Logo" className="h-40 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -46,7 +41,11 @@ export default function LandingHeader() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <a href="/whitepaper" target="_blank" rel="noopener noreferrer">
+            <a
+              href="/whitepaper.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button variant="ghost">White Paper</Button>
             </a>
             <Link href="/login">
@@ -95,7 +94,11 @@ export default function LandingHeader() {
               About
             </Link>
             <div className="flex flex-col gap-2 pt-4">
-              <a href="/whitepaper" target="_blank" rel="noopener noreferrer">
+              <a
+                href="/whitepaper.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button variant="ghost" className="w-full">
                   White Paper
                 </Button>

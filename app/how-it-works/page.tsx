@@ -220,7 +220,7 @@ export default function HowItWorksPage() {
           <div className="p-6 border border-border-primary rounded-lg hover:border-primary hover:bg-background-elevated transition-all">
             <p className="text-text-secondary">
               See{" "}
-              <a href="/whitepaper" className="text-primary hover:underline font-medium">
+              <a href="/whitepaper.html" className="text-primary hover:underline font-medium">
                 the whitepaper
               </a>
               {" "}for detailed diagrams and the full technical architecture.

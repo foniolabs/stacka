@@ -458,9 +458,9 @@ A: We offer stocks + crypto + DeFi in one platform with stablecoin settlement.
 
 ### C. Contact
 
-**STACKA Technologies Ltd.**
+**FONIO LABS Ltd.**
 
-Lagos, Nigeria
+Jos, Nigeria
 
 📧 admin@stacka.xyz
 
@@ -474,7 +474,7 @@ Lagos, Nigeria
 
 This whitepaper is informational only, not financial advice. Cryptocurrency and stock investments carry risk including loss of principal. Consult qualified professionals before investing.
 
-**Copyright © 2025 STACKA Technologies Ltd.**
+**Copyright © 2025 FONIO LABS Ltd.**
 
 _Version 1.0 | November 2025_
 

@@ -1,20 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import Button from "@/components/ui/Button";
+import { whitepaperContent } from "@/lib/whitepaper";
 
 export default function WhitepaperPage() {
-  const [md, setMd] = useState<string>("");
-
-  useEffect(() => {
-    fetch("/whitepaper.md")
-      .then((res) => res.text())
-      .then((text) => setMd(text))
-      .catch(() => setMd("# STACKA WHITEPAPER\n\nContent not available."));
-  }, []);
 
   const handleDownload = () => {
     window.print();
@@ -51,16 +43,12 @@ export default function WhitepaperPage() {
         </div>
 
         <div className="p-8 prose prose-invert max-w-none">
-          {md ? (
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]}
-            >
-              {md}
-            </ReactMarkdown>
-          ) : (
-            <p>Loading...</p>
-          )}
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+          >
+            {whitepaperContent}
+          </ReactMarkdown>
 
           <hr />
 

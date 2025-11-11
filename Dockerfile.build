@@ -1,0 +1,19 @@
+# Dockerfile for building static export with Node 20
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build static export
+RUN npm run build
+
+# The out folder will be in /app/out
+CMD ["echo", "Build complete! Copy the out folder from this container."]

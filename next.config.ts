@@ -3,9 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // Disabled static export to support dynamic routes
-  // output: 'export',
-  
+  // Enable static export for production
+  output: 'export',
+
   images: {
     unoptimized: true,
     remotePatterns: [

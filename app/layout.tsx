@@ -30,9 +30,9 @@ export const metadata: Metadata = {
     "Invest in stocks, crypto, and DeFi with AI-powered insights. One wallet for all your investments.",
   manifest: "/manifest.json",
   icons: {
-    icon: "/stacka-logo.svg",
-    shortcut: "/stacka-logo.svg",
-    apple: "/stacka-logo.svg",
+    icon: "/stacka.svg",
+    shortcut: "/stacka.svg",
+    apple: "/stacka.svg",
   },
   appleWebApp: {
     capable: true,

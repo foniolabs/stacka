@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>STACKA Whitepaper</title>
+  <link rel="icon" href="/stacka-logo.svg" />
+    <style>
+      :root{--bg:#0b1220;--card:#0f1724;--muted:#9aa4b2;--accent:#10b981}
+      html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+      body{background:linear-gradient(180deg,rgba(2,6,23,1) 0%, rgba(6,10,24,1) 100%);color:#e6eef8}
+      .container{max-width:900px;margin:48px auto;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+      header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+      header img{height:44px}
+      h1{margin:0;font-size:1.6rem}
+      .meta{color:var(--muted);font-size:0.9rem}
+      .prose{line-height:1.7;color:#e6eef8}
+      pre{background:#00121a;padding:12px;border-radius:8px;overflow:auto}
+      a{color:#C4FF0D}
+      img.cover{width:100%;height:auto;border-radius:8px;margin-bottom:12px}
+      .actions{margin-left:auto;display:flex;gap:8px}
+      .button{background:#C4FF0D;color:#042023;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600}
+      @media (max-width:640px){.container{margin:20px 16px;padding:18px}}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+  <img src="/stacka-logo.svg" alt="STACKA" />
+        <div>
+          <h1>STACKA WHITEPAPER</h1>
+          <div class="meta">Version 1.0 — November 2025</div>
+        </div>
+        <div class="actions">
+          <a class="button" href="/">Open Site</a>
+          <a class="button" id="printBtn" href="#">Print / Save PDF</a>
+        </div>
+      </header>
+
+      <img id="cover" class="cover" src="/Stacka-cover.png" alt="STACKA Cover" onerror="this.src='/stacka-cover.svg'" />
+
+      <article id="content" class="prose">Loading…</article>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+    <script>
+      async function renderMarkdown(){
+        try{
+          const res = await fetch('/whitepaper.md');
+          if(!res.ok) throw new Error('Could not fetch whitepaper.md');
+          const md = await res.text();
+          const html = marked.parse(md);
+          const clean = DOMPurify.sanitize(html);
+          document.getElementById('content').innerHTML = clean;
+        }catch(e){
+          document.getElementById('content').textContent = 'Failed to load whitepaper.';
+          console.error(e);
+        }
+      }
+
+      document.getElementById('printBtn').addEventListener('click', (e)=>{e.preventDefault();window.print();});
+      renderMarkdown();
+    </script>
+  </body>
+</html>

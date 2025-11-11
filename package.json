@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:static": "next build && echo 'Static build complete in out/ folder'",
     "start": "next start",
     "lint": "eslint"
   },
