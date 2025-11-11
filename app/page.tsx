@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Wallet, TrendingUp, Users, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Wallet, TrendingUp, Users, ArrowUpRight, Zap, Gift, Bell } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import LandingHeader from '@/components/layout/LandingHeader';
@@ -222,21 +222,27 @@ export default function Home() {
           {/* Benefits */}
           <div className="grid md:grid-cols-3 gap-6 mt-16">
             <div className="bg-background-card border border-border-primary rounded-xl p-6">
-              <div className="text-4xl mb-3">⚡</div>
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-6 h-6 text-primary" />
+              </div>
               <h3 className="text-white font-bold mb-2">Early Access</h3>
               <p className="text-text-secondary text-sm">
                 Get priority access before public launch
               </p>
             </div>
             <div className="bg-background-card border border-border-primary rounded-xl p-6">
-              <div className="text-4xl mb-3">🎁</div>
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Gift className="w-6 h-6 text-primary" />
+              </div>
               <h3 className="text-white font-bold mb-2">Exclusive Perks</h3>
               <p className="text-text-secondary text-sm">
                 Special bonuses for early adopters
               </p>
             </div>
             <div className="bg-background-card border border-border-primary rounded-xl p-6">
-              <div className="text-4xl mb-3">📢</div>
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Bell className="w-6 h-6 text-primary" />
+              </div>
               <h3 className="text-white font-bold mb-2">Launch Updates</h3>
               <p className="text-text-secondary text-sm">
                 Stay informed about our progress

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Mail, CheckCircle2, Loader2 } from "lucide-react";
 import Button from "@/components/ui/Button";
+import LandingHeader from "@/components/layout/LandingHeader";
+import LandingFooter from "@/components/layout/LandingFooter";
 
 export default function WaitlistPage() {
   const [email, setEmail] = useState("");
@@ -17,20 +19,19 @@ export default function WaitlistPage() {
 
     try {
       // Using Web3Forms (free, no backend needed)
+      const formData = new FormData(e.target as HTMLFormElement);
+      formData.append("access_key", "1403a1ee-9636-48fa-b7f8-af582678c03b");
+      formData.append("subject", "New STACKA Waitlist Signup");
+      formData.append("from_name", "STACKA Waitlist");
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "YOUR_WEB3FORMS_ACCESS_KEY", // You'll need to get this from web3forms.com
-          email: email,
-          subject: "New STACKA Waitlist Signup",
-          from_name: "STACKA Waitlist",
-        }),
+        body: formData
       });
 
-      if (response.ok) {
+      const data = await response.json();
+
+      if (data.success) {
         setSubmitted(true);
         setEmail("");
       } else {
@@ -44,22 +45,25 @@ export default function WaitlistPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <img
-            src="/stacka-logo.svg"
-            alt="STACKA"
-            className="h-16 w-auto mx-auto mb-4"
-          />
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-            Join the Waitlist
-          </h1>
-          <p className="text-xl text-text-secondary">
-            Be among the first to access STACKA when we launch
-          </p>
-        </div>
+    <div className="min-h-screen bg-black">
+      <LandingHeader />
+
+      <div className="flex items-center justify-center p-4 pt-24">
+        <div className="max-w-2xl w-full">
+          {/* Logo */}
+          <div className="text-center mb-8">
+            <img
+              src="/stacka-logo.svg"
+              alt="STACKA"
+              className="h-16 w-auto mx-auto mb-4"
+            />
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+              Join the Waitlist
+            </h1>
+            <p className="text-xl text-text-secondary">
+              Be among the first to access STACKA when we launch
+            </p>
+          </div>
 
         {!submitted ? (
           <div className="bg-background-card border border-border-primary rounded-2xl p-8 md:p-12">
@@ -117,6 +121,7 @@ export default function WaitlistPage() {
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -200,7 +205,10 @@ export default function WaitlistPage() {
             </div>
           </div>
         </div>
+        </div>
       </div>
+
+      <LandingFooter />
     </div>
   );
 }
