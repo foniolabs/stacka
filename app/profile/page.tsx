@@ -108,7 +108,6 @@ export default function ProfilePage() {
   const handleLogout = () => {
     logout();
     router.push("/login");
-    toast.success("Logged out successfully");
   };
 
   return (

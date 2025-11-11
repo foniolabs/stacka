@@ -10,6 +10,7 @@ import MobileNav from "@/components/layout/MobileNav";
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
+import toast from "react-hot-toast";
 
 interface Stock {
   symbol: string;
@@ -51,6 +52,7 @@ export default function USStocksPage() {
       }
     } catch (error) {
       console.error("Failed to fetch US stocks:", error);
+      toast.error("Failed to load US stocks. Please try again.");
     } finally {
       setIsLoading(false);
     }

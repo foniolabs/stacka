@@ -186,7 +186,7 @@ export default function SmartSplitModal({
             </button>
             <button
               onClick={() => router.push("/smart-split")}
-              className="flex-1 bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-xl transition"
+              className="flex-1 bg-primary hover:bg-primary-dark text-black font-semibold py-3 rounded-xl transition"
             >
               Set Up Now
             </button>
@@ -198,7 +198,7 @@ export default function SmartSplitModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-surface rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-background-card rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">

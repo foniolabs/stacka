@@ -3,8 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // Server mode for Hostinger Node.js deployment
-  // Comment out 'output: export' for dynamic routes support
+  // Disabled static export to support dynamic routes
   // output: 'export',
   
   images: {

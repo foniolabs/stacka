@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="480" viewBox="0 0 1200 480">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0ea5a7" />
+      <stop offset="100%" stop-color="#60a5fa" />
+    </linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="24" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="480" rx="24" fill="url(#g)" />
+  <g filter="url(#s)">
+    <rect x="40" y="40" width="1120" height="400" rx="20" fill="#ffffff" opacity="0.03" />
+  </g>
+  <g transform="translate(80,110)">
+    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="700" fill="#fff">STACKA</text>
+    <text x="0" y="72" font-family="Inter, Arial, sans-serif" font-size="24" fill="#e6f0ff">Whitepaper — Bridging TradFi and DeFi</text>
+
+    <rect x="0" y="110" width="760" height="2" fill="#ffffff" opacity="0.12" rx="1" />
+
+    <text x="0" y="170" font-family="Inter, Arial, sans-serif" font-size="16" fill="#f8fafc">Version 1.0 • November 2025</text>
+
+    <g transform="translate(0,210)">
+      <rect x="0" y="0" width="340" height="140" rx="12" fill="#ffffff" opacity="0.06" />
+      <text x="20" y="32" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600" fill="#fff">Democratizing global markets</text>
+      <text x="20" y="64" font-family="Inter, Arial, sans-serif" font-size="14" fill="#e6f0ff">Invest in stocks, crypto and DeFi from a single USDC wallet.</text>
+    </g>
+  </g>
+
+  <g transform="translate(880,120)">
+    <rect x="0" y="0" width="240" height="240" rx="12" fill="#ffffff" opacity="0.06" />
+    <text x="24" y="36" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" fill="#fff">STACKA</text>
+    <text x="24" y="68" font-family="Inter, Arial, sans-serif" font-size="12" fill="#e6f0ff">Smart Investment Platform</text>
+  </g>
+</svg>

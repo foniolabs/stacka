@@ -25,25 +25,19 @@ export default function LandingHeader() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <Link
-              href="/#features"
+              href="/features"
               className="text-text-secondary hover:text-white transition-colors"
             >
               Features
             </Link>
             <Link
-              href="/#how-it-works"
+              href="/how-it-works"
               className="text-text-secondary hover:text-white transition-colors"
             >
               How it Works
             </Link>
             <Link
-              href="/#pricing"
-              className="text-text-secondary hover:text-white transition-colors"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/#about"
+              href="/about"
               className="text-text-secondary hover:text-white transition-colors"
             >
               About
@@ -80,28 +74,21 @@ export default function LandingHeader() {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 space-y-4">
             <Link
-              href="/#features"
+              href="/features"
               className="block py-2 text-text-secondary hover:text-white transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Features
             </Link>
             <Link
-              href="/#how-it-works"
+              href="/how-it-works"
               className="block py-2 text-text-secondary hover:text-white transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               How it Works
             </Link>
             <Link
-              href="/#pricing"
-              className="block py-2 text-text-secondary hover:text-white transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/#about"
+              href="/about"
               className="block py-2 text-text-secondary hover:text-white transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -109,7 +96,9 @@ export default function LandingHeader() {
             </Link>
             <div className="flex flex-col gap-2 pt-4">
               <a href="/whitepaper" target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" className="w-full">White Paper</Button>
+                <Button variant="ghost" className="w-full">
+                  White Paper
+                </Button>
               </a>
               <Link href="/login">
                 <Button variant="ghost" className="w-full">

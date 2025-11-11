@@ -10,6 +10,7 @@ import MobileNav from "@/components/layout/MobileNav";
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
+import toast from "react-hot-toast";
 
 interface YieldOption {
   provider: string;
@@ -37,14 +38,23 @@ export default function YieldOpportunitiesPage() {
   >("all");
   const [sortBy, setSortBy] = useState<"apy" | "risk" | "protocol">("apy");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Wait for zustand to hydrate from localStorage
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   useEffect(() => {
+    // Only check auth after hydration
+    if (!isHydrated) return;
+
     if (!isAuthenticated) {
       router.push("/login");
       return;
     }
     fetchOpportunities();
-  }, [isAuthenticated, router]);
+  }, [isHydrated, isAuthenticated, router]);
 
   useEffect(() => {
     filterAndSortOpportunities();
@@ -59,6 +69,7 @@ export default function YieldOpportunitiesPage() {
       }
     } catch (error) {
       console.error("Failed to fetch yield opportunities:", error);
+      toast.error("Failed to load yield opportunities. Please try again.");
     } finally {
       setIsLoading(false);
     }

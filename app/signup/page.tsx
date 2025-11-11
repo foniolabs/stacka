@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, User } from "lucide-react";
@@ -21,6 +21,18 @@ export default function SignupPage() {
     lastName: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Clear form fields on page load
+  useEffect(() => {
+    setFormData({
+      email: "",
+      password: "",
+      confirmPassword: "",
+      firstName: "",
+      lastName: "",
+    });
+    setErrors({});
+  }, []);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -77,6 +89,14 @@ export default function SignupPage() {
         lastName: formData.lastName,
       });
       toast.success("Account created successfully!");
+      setFormData({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        firstName: "",
+        lastName: "",
+      });
+      setErrors({});
       router.push("/dashboard");
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Signup failed");

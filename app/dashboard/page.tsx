@@ -167,7 +167,7 @@ export default function DashboardPage() {
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center mx-auto mb-2">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <p className="text-sm font-semibold">Smart Split</p>
+              <p className="text-sm font-semibold whitespace-nowrap">Smart Split</p>
               <p className="text-xs text-text-secondary mt-0.5">Auto-invest</p>
             </Card>
           </button>

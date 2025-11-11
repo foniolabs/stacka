@@ -45,7 +45,22 @@ class ApiClient {
 
   private getToken(): string | null {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+      // First try direct token storage
+      let token = localStorage.getItem('token');
+      
+      // If not found, check auth-storage from zustand persist
+      if (!token) {
+        try {
+          const authStorage = localStorage.getItem('auth-storage');
+          if (authStorage) {
+            const parsed = JSON.parse(authStorage);
+            token = parsed.state?.token || null;
+          }
+        } catch (error) {
+          console.error('Failed to parse auth storage:', error);
+        }
+      }
+      
       if (!token) {
         console.warn('No authentication token found. Please login first.');
       }
@@ -60,7 +75,21 @@ class ApiClient {
 
   public setToken(token: string): void {
     if (typeof window !== 'undefined') {
+      // Store in both locations for compatibility
       localStorage.setItem('token', token);
+      
+      // Also update the auth-storage from zustand
+      try {
+        const authStorage = localStorage.getItem('auth-storage');
+        if (authStorage) {
+          const parsed = JSON.parse(authStorage);
+          parsed.state = parsed.state || {};
+          parsed.state.token = token;
+          localStorage.setItem('auth-storage', JSON.stringify(parsed));
+        }
+      } catch (error) {
+        console.error('Failed to update auth storage:', error);
+      }
     }
   }
 

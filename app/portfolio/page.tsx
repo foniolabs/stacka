@@ -113,17 +113,6 @@ export default function PortfolioPage() {
             )}
             <span className="text-text-tertiary text-sm">All Time</span>
           </div>
-
-          {/* Available Cash */}
-          <div className="pt-4 border-t border-white/10 mb-4">
-            <div className="flex justify-between items-center">
-              <p className="text-sm text-text-secondary">Available Cash</p>
-              <p className="text-xl font-semibold text-accent-green">
-                {formatCurrency(cashBalance)}
-              </p>
-            </div>
-            <p className="text-xs text-text-tertiary mt-1">Ready to invest</p>
-          </div>
         </Card>
 
         {/* Tabs */}

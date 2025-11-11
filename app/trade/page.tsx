@@ -11,6 +11,7 @@ import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 const CATEGORIES = ["All", "Yields", "Nigerian Stocks", "US Stocks"];
 
@@ -54,6 +55,7 @@ export default function TradePage() {
       if (usResponse?.data?.stocks) setUSStocks(usResponse.data.stocks);
     } catch (error) {
       console.error("Failed to fetch assets:", error);
+      toast.error("Failed to load trading assets. Please try again.");
     } finally {
       setLoadingData(false);
     }

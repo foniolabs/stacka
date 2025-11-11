@@ -11,6 +11,7 @@ import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { formatCurrency } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 interface Stock {
   symbol: string;
@@ -52,6 +53,7 @@ export default function NigerianStocksPage() {
       }
     } catch (error) {
       console.error("Failed to fetch Nigerian stocks:", error);
+      toast.error("Failed to load Nigerian stocks. Please try again.");
     } finally {
       setIsLoading(false);
     }

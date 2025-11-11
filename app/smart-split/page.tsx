@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, Save, Trash2, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button";
 
 interface AllocationBreakdown {
   [key: string]: number;
@@ -559,14 +560,15 @@ export default function SmartSplitPage() {
         )}
 
         {/* Save Button */}
-        <button
+        <Button
+          variant="primary"
           onClick={savePreferences}
           disabled={saving || Math.abs(totalPercent - 100) > 0.01}
-          className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-2 transition"
+          className="w-full py-4 flex items-center justify-center gap-2 text-lg"
         >
           <Save className="w-5 h-5" />
           {saving ? "Saving..." : "Save Smart Split Preferences"}
-        </button>
+        </Button>
       </div>
     </div>
   );

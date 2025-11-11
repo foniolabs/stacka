@@ -97,11 +97,14 @@ export default function YieldDetailPage() {
           const providerMap: Record<string, string> = {
             "Aave V3": "aave",
             "Compound V3": "compound",
-            "Moonwell": "moonwell",
+            Moonwell: "moonwell",
           };
-          
-          const provider = providerMap[protocol] || yieldOption.provider || protocol.toLowerCase().split(' ')[0];
-          
+
+          const provider =
+            providerMap[protocol] ||
+            yieldOption.provider ||
+            protocol.toLowerCase().split(" ")[0];
+
           const depositData = {
             provider: provider,
             amount: amountValue,
