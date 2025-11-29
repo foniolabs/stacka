@@ -14,11 +14,13 @@ import { useAuthStore } from "@/store/authStore";
 import { useWalletStore } from "@/store/walletStore";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { apiClient } from "@/lib/api/client";
+import { useIsDesktop } from "@/hooks/useMediaQuery";
 import Header from "@/components/layout/Header";
 import MobileNav from "@/components/layout/MobileNav";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import SmartSplitModal from "@/components/features/SmartSplitModal";
+import DesktopDashboard from "@/components/dashboard/DesktopDashboard";
 import { formatCurrency, formatPercentage, getChangeColor } from "@/lib/utils";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -30,6 +32,7 @@ export default function DashboardPage() {
   const { portfolio, holdings, fetchPortfolio, fetchHoldings } =
     usePortfolioStore();
 
+  const isDesktop = useIsDesktop();
   const [yieldData, setYieldData] = useState<any[]>([]);
   const [nigerianStocks, setNigerianStocks] = useState<any[]>([]);
   const [usStocks, setUSStocks] = useState<any[]>([]);
@@ -109,6 +112,31 @@ export default function DashboardPage() {
   const totalValue = balance || 0; // Total = Main balance (not adding investments since they came from balance)
   const gainLoss = portfolio?.overview?.totalGainLoss || 0;
   const gainLossPercent = portfolio?.overview?.totalGainLossPercent || 0;
+
+  // Show desktop view on larger screens
+  if (isDesktop) {
+    return (
+      <>
+        <DesktopDashboard
+          user={user || undefined}
+          balance={balance || 0}
+          portfolio={portfolio}
+          holdings={holdings}
+          yieldData={yieldData}
+          usStocks={usStocks}
+          nigerianStocks={nigerianStocks}
+          onSmartSplit={() => setShowSmartSplit(true)}
+        />
+
+        {/* Smart Split Modal */}
+        <SmartSplitModal
+          isOpen={showSmartSplit}
+          onClose={() => setShowSmartSplit(false)}
+          balance={balance || 0}
+        />
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black pb-20">
@@ -335,66 +363,28 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Nigerian Stocks - Compact */}
+        {/* Nigerian Stocks - Coming Soon */}
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold">Nigerian Stocks</h2>
-            <Link
-              href="/stocks/nigerian"
-              className="text-xs text-primary hover:text-primary-hover"
-            >
-              View All
-            </Link>
+            <span className="text-xs text-accent-purple font-semibold px-2 py-1 rounded-lg bg-accent-purple/10">
+              Coming Soon
+            </span>
           </div>
 
-          {Array.isArray(nigerianStocks) && nigerianStocks.length > 0 ? (
-            <div className="space-y-2">
-              {nigerianStocks.map((stock) => (
-                <Card
-                  key={stock.symbol}
-                  hover
-                  className="p-3 cursor-pointer"
-                  onClick={() =>
-                    router.push(`/stocks/${stock.symbol}?market=NGN`)
-                  }
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-accent-blue/10 flex items-center justify-center">
-                        <span className="text-sm font-bold text-accent-blue">
-                          {stock.symbol?.charAt(0)}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold">{stock.symbol}</p>
-                        <p className="text-xs text-text-secondary">
-                          {stock.name}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-semibold">
-                        ₦{stock.price?.toFixed(2)}
-                      </p>
-                      <p
-                        className={`text-xs ${getChangeColor(
-                          stock.change || 0
-                        )}`}
-                      >
-                        {formatPercentage(Math.abs(stock.change || 0))}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
+          <Card className="p-6 text-center">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-accent-blue/10 flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-accent-blue" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold mb-1">Nigerian Stocks Coming Soon</p>
+                <p className="text-xs text-text-secondary">
+                  We're working on integrating Nigerian Stock Exchange. Stay tuned!
+                </p>
+              </div>
             </div>
-          ) : (
-            <Card className="p-4 text-center">
-              <p className="text-sm text-text-secondary">
-                Loading Nigerian stocks...
-              </p>
-            </Card>
-          )}
+          </Card>
         </div>
 
         {/* US Stocks - Compact */}

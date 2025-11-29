@@ -1,23 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { X, Wallet as WalletIcon, Building2, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X, Wallet as WalletIcon, Building2, Send, AlertCircle } from "lucide-react";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import toast from "react-hot-toast";
 import { formatCurrency } from "@/lib/utils";
+import { ethers } from "ethers";
 
 interface WithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
   balance: number;
+  depositAddress?: string; // Custodial wallet address
 }
 
 export default function WithdrawModal({
   isOpen,
   onClose,
   balance,
+  depositAddress,
 }: WithdrawModalProps) {
   const [withdrawType, setWithdrawType] = useState<"crypto" | "bank">("crypto");
   const [amount, setAmount] = useState("");
@@ -32,13 +35,19 @@ export default function WithdrawModal({
   if (!isOpen) return null;
 
   const handleWithdraw = async () => {
+    // Validation
     if (!amount || parseFloat(amount) <= 0) {
       toast.error("Please enter a valid amount");
       return;
     }
 
+    if (parseFloat(amount) < 10) {
+      toast.error("Minimum withdrawal is $10 USDC");
+      return;
+    }
+
     if (parseFloat(amount) > balance) {
-      toast.error("Insufficient balance");
+      toast.error(`Insufficient USDC balance. You have ${formatCurrency(balance)} available.`);
       return;
     }
 
@@ -62,24 +71,57 @@ export default function WithdrawModal({
     toast.loading("Processing withdrawal...", { id: "withdraw" });
 
     try {
-      // TODO: Call actual withdrawal API
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Call backend API for custodial withdrawal
+      const response = await fetch('/api/v1/withdrawals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          amount: parseFloat(amount),
+          currency: 'USDC',
+          destination: {
+            type: withdrawType === "crypto" ? 'WALLET' : 'BANK',
+            address: withdrawType === "crypto" ? recipient : undefined,
+            bankDetails: withdrawType === "bank" ? bankDetails : undefined,
+          },
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Withdrawal failed');
+      }
+
+      const fee = data.data?.fee || 0;
+      const netAmount = parseFloat(amount) - fee;
 
       toast.success(
-        `Withdrawal of ${formatCurrency(
-          parseFloat(amount)
-        )} initiated successfully`,
-        { id: "withdraw", duration: 4000 }
+        `Withdrawal request submitted! You'll receive ${formatCurrency(netAmount)} USDC (fee: ${formatCurrency(fee)})`,
+        { id: "withdraw", duration: 6000 }
       );
 
       onClose();
       setAmount("");
       setRecipient("");
       setBankDetails({ accountNumber: "", accountName: "", bankName: "" });
+      
+      // Refresh balance
+      window.location.reload();
     } catch (error: any) {
-      toast.error(error.message || "Withdrawal failed. Please try again.", {
-        id: "withdraw",
-      });
+      console.error("Withdrawal error:", error);
+      
+      let errorMessage = "Withdrawal failed. Please try again.";
+      
+      if (error.message) {
+        errorMessage = error.message.length > 100 
+          ? error.message.substring(0, 100) + "..." 
+          : error.message;
+      }
+      
+      toast.error(errorMessage, { id: "withdraw", duration: 5000 });
     } finally {
       setIsProcessing(false);
     }
@@ -99,12 +141,51 @@ export default function WithdrawModal({
         </div>
 
         <div className="p-4 space-y-4">
+          {/* Custodial Wallet Info */}
+          {depositAddress && (
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-xs">
+              <p className="text-blue-400 font-semibold mb-1">ℹ️ Custodial Wallet</p>
+              <p className="text-text-secondary mb-2">
+                Your funds are in a secure custodial wallet managed by Stacka.
+              </p>
+              <div className="bg-background-card rounded p-2 font-mono text-xs break-all">
+                {depositAddress}
+              </div>
+              <p className="text-text-tertiary mt-2">
+                Withdrawal will be processed from this address. Gas fees are covered by Stacka.
+              </p>
+            </div>
+          )}
+
           {/* Available Balance */}
           <div className="bg-background-hover rounded-lg p-3">
             <p className="text-xs text-text-secondary mb-0.5">
               Available Balance
             </p>
             <p className="text-2xl font-bold">{formatCurrency(balance)}</p>
+            <p className="text-xs text-text-tertiary mt-1">
+              Minimum withdrawal: $10 USDC
+            </p>
+          </div>
+
+          {/* Withdrawal Fee Info */}
+          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-2.5 text-xs">
+            <p className="text-yellow-500 font-semibold mb-1.5">💰 Withdrawal Fees</p>
+            <div className="flex justify-between items-center text-text-secondary">
+              <span>Fee (1% or min $1):</span>
+              <span className="text-white font-semibold">
+                {amount ? `~${formatCurrency(Math.max(parseFloat(amount) * 0.01, 1))}` : '$1.00'}
+              </span>
+            </div>
+            <div className="flex justify-between items-center text-text-secondary mt-1">
+              <span>You'll receive:</span>
+              <span className="text-green-500 font-semibold">
+                {amount ? formatCurrency(parseFloat(amount) - Math.max(parseFloat(amount) * 0.01, 1)) : '$0.00'}
+              </span>
+            </div>
+            <p className="text-text-tertiary mt-2">
+              ✅ Gas fees are covered by Stacka
+            </p>
           </div>
 
           {/* Withdrawal Type Selector */}

@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Sparkles, TrendingUp, TrendingDown } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
+import { useWalletStore } from "@/store/walletStore";
+import { useIsDesktop } from "@/hooks/useMediaQuery";
 import { apiClient } from "@/lib/api/client";
 import Header from "@/components/layout/Header";
 import MobileNav from "@/components/layout/MobileNav";
+import DesktopLayout from "@/components/layout/DesktopLayout";
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -18,6 +21,8 @@ const CATEGORIES = ["All", "Yields", "Nigerian Stocks", "US Stocks"];
 export default function TradePage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
+  const { balance } = useWalletStore();
+  const isDesktop = useIsDesktop();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [yieldData, setYieldData] = useState<any[]>([]);
@@ -82,6 +87,153 @@ export default function TradePage() {
   const filteredNigerianStocks = filterBySearch(nigerianStocks);
   const filteredUSStocks = filterBySearch(usStocks);
 
+  // Desktop View
+  if (isDesktop) {
+    return (
+      <DesktopLayout balance={balance || 0}>
+        <div className="overflow-y-auto h-full scrollbar-hide">
+          <div className="p-6 mx-14 space-y-6">
+            {/* Search & Filter */}
+            <div className="space-y-4">
+              <h1 className="text-2xl font-bold">Trade</h1>
+
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary" />
+                <Input
+                  placeholder="Search stocks, protocols..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-12 h-12 text-base"
+                />
+              </div>
+
+              {/* Categories */}
+              <div className="flex gap-2">
+                {CATEGORIES.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                      selectedCategory === category
+                        ? "bg-primary text-black"
+                        : "bg-background-hover text-text-secondary hover:text-white"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {loadingData ? (
+              <Card className="p-8">
+                <p className="text-center text-text-secondary">
+                  Loading investment options...
+                </p>
+              </Card>
+            ) : (
+              <div className="space-y-8">
+                {/* DeFi Yields Section */}
+                {showYields && Array.isArray(filteredYields) && filteredYields.length > 0 && (
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-primary" />
+                        <h2 className="text-xl font-bold">DeFi Yields</h2>
+                      </div>
+                      <Link href="/yield" className="text-sm text-primary hover:text-primary-hover">
+                        View All →
+                      </Link>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-4">
+                      {filteredYields.map((yieldItem, index) => (
+                        <Card
+                          key={index}
+                          hover
+                          className="p-4 cursor-pointer text-center"
+                          onClick={() => router.push(`/yield/${encodeURIComponent(yieldItem.protocol)}`)}
+                        >
+                          <div className="w-12 h-12 rounded-full bg-accent-green/10 flex items-center justify-center mx-auto mb-3">
+                            <Sparkles className="w-6 h-6 text-accent-green" />
+                          </div>
+                          <p className="font-semibold mb-1">{yieldItem.asset || "USDC"}</p>
+                          <p className="text-sm text-text-secondary mb-2">{yieldItem.protocol}</p>
+                          <p className="text-2xl font-bold text-accent-green">{yieldItem.apy?.toFixed(2)}%</p>
+                          <p className="text-xs text-text-tertiary">APY</p>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* US Stocks Section */}
+                {showUSStocks && Array.isArray(filteredUSStocks) && filteredUSStocks.length > 0 && (
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-xl font-bold">US Stocks</h2>
+                      <Link href="/stocks/us" className="text-sm text-primary hover:text-primary-hover">
+                        View All →
+                      </Link>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-4">
+                      {filteredUSStocks.map((stock) => (
+                        <Card
+                          key={stock.symbol}
+                          hover
+                          className="p-4 cursor-pointer"
+                          onClick={() => router.push(`/stocks/${stock.symbol}?market=US`)}
+                        >
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-10 h-10 rounded-full bg-accent-purple/10 flex items-center justify-center">
+                              <span className="text-sm font-bold text-accent-purple">
+                                {stock.symbol?.charAt(0)}
+                              </span>
+                            </div>
+                            <p className="font-semibold">{stock.symbol}</p>
+                          </div>
+                          <p className="text-sm text-text-secondary mb-2 line-clamp-1">{stock.name}</p>
+                          <p className="text-lg font-semibold mb-1">${stock.price?.toFixed(2)}</p>
+                          <p className={`text-sm flex items-center gap-1 ${stock.changePercent >= 0 ? "text-accent-green" : "text-accent-red"}`}>
+                            {stock.changePercent >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                            {Math.abs(stock.changePercent || 0).toFixed(2)}%
+                          </p>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Nigerian Stocks - Coming Soon */}
+                {showNigerianStocks && (
+                  <Card>
+                    <div className="flex items-center gap-4 p-6 bg-accent-purple/5 rounded-xl border border-accent-purple/20">
+                      <Sparkles className="w-8 h-8 text-accent-purple flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold mb-1">Nigerian Stocks Coming Soon</p>
+                        <p className="text-sm text-text-secondary">Integration with Nigerian Stock Exchange in progress</p>
+                      </div>
+                    </div>
+                  </Card>
+                )}
+
+                {/* No Results */}
+                {searchQuery && filteredYields.length === 0 && filteredNigerianStocks.length === 0 && filteredUSStocks.length === 0 && (
+                  <Card className="p-8 text-center">
+                    <p className="text-text-secondary">No results found for "{searchQuery}"</p>
+                    <p className="text-sm text-text-tertiary mt-2">Try a different search term or category</p>
+                  </Card>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </DesktopLayout>
+    );
+  }
+
+  // Mobile View
   return (
     <div className="min-h-screen bg-black pb-20">
       <Header title="Trade" subtitle="Invest in stocks and earn yields" />
@@ -174,71 +326,29 @@ export default function TradePage() {
                 </div>
               )}
 
-            {/* Nigerian Stocks Section */}
-            {showNigerianStocks &&
-              Array.isArray(filteredNigerianStocks) &&
-              filteredNigerianStocks.length > 0 && (
+            {/* Nigerian Stocks Section - Coming Soon */}
+            {showNigerianStocks && (
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <h2 className="text-base font-bold">Nigerian Stocks</h2>
-                    <Link
-                      href="/stocks/nigerian"
-                      className="text-xs text-primary hover:text-primary-hover"
-                    >
-                      View All
-                    </Link>
+                    <span className="text-xs text-accent-purple font-semibold px-2 py-1 rounded-lg bg-accent-purple/10">
+                      Coming Soon
+                    </span>
                   </div>
 
-                  <div className="space-y-2">
-                    {filteredNigerianStocks.map((stock) => (
-                      <Card
-                        key={stock.symbol}
-                        hover
-                        className="cursor-pointer p-2.5"
-                        onClick={() =>
-                          router.push(`/stocks/${stock.symbol}?market=NGN`)
-                        }
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="w-9 h-9 rounded-full bg-accent-blue/10 flex items-center justify-center">
-                              <span className="text-sm font-bold text-accent-blue">
-                                {stock.symbol?.charAt(0)}
-                              </span>
-                            </div>
-                            <div>
-                              <p className="text-sm font-semibold">
-                                {stock.symbol}
-                              </p>
-                              <p className="text-xs text-text-secondary line-clamp-1">
-                                {stock.name}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="text-right">
-                            <p className="text-sm font-semibold">
-                              ₦{stock.price?.toFixed(2)}
-                            </p>
-                            <p
-                              className={`text-xs flex items-center gap-1 justify-end ${
-                                stock.changePercent >= 0
-                                  ? "text-accent-green"
-                                  : "text-accent-red"
-                              }`}
-                            >
-                              {stock.changePercent >= 0 ? (
-                                <TrendingUp className="w-3 h-3" />
-                              ) : (
-                                <TrendingDown className="w-3 h-3" />
-                              )}
-                              {Math.abs(stock.changePercent || 0).toFixed(2)}%
-                            </p>
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
+                  <Card className="p-4 text-center">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-10 h-10 rounded-full bg-accent-blue/10 flex items-center justify-center">
+                        <Sparkles className="w-5 h-5 text-accent-blue" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold mb-0.5">Nigerian Stocks Coming Soon</p>
+                        <p className="text-xs text-text-secondary">
+                          Integration with Nigerian Stock Exchange in progress
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
               )}
 

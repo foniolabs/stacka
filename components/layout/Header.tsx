@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { Bell, Settings } from 'lucide-react';
-import Link from 'next/link';
+import { Bell, Settings } from "lucide-react";
+import Link from "next/link";
+import BalanceBadge from "./BalanceBadge";
 
 interface HeaderProps {
   title: string;
@@ -21,6 +22,9 @@ export default function Header({ title, subtitle, actions }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Global balance badge shown in the header */}
+          <BalanceBadge />
+
           {actions}
           <Link
             href="/notifications"

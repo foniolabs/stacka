@@ -6,6 +6,10 @@ export interface User {
   phoneNumber?: string;
   walletAddress: string;
   kycStatus: 'PENDING' | 'VERIFIED' | 'REJECTED';
+  // Bread wallet fields
+  breadWalletId?: string | null;
+  breadEvmAddress?: string | null;
+  breadSvmAddress?: string | null;
   createdAt: string;
   updatedAt: string;
 }

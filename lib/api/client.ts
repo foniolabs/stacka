@@ -125,6 +125,70 @@ class ApiClient {
     return this.client.get('/api/v1/wallet/exchange-rate');
   }
 
+  // Bread Wallet endpoints
+  async createBreadWallet() {
+    return this.client.post('/api/v1/bread/wallet/create');
+  }
+
+  async getBreadWalletAddresses() {
+    return this.client.get('/api/v1/bread/wallet/addresses');
+  }
+
+  async getBreadWalletBalance(walletId: string) {
+    return this.client.get('/api/v1/bread/wallet/balances', {
+      params: { walletId },
+    });
+  }
+
+  async getBreadOfframpRate(currency: string = 'NGN') {
+    return this.client.get('/api/v1/bread/offramp/rate', {
+      params: { currency },
+    });
+  }
+
+  async getBreadOfframpQuote(data: {
+    amount: number;
+    currency: string;
+    asset: string;
+  }) {
+    return this.client.post('/api/v1/bread/offramp/quote', data);
+  }
+
+  async executeBreadOfframp(data: {
+    walletId: string;
+    amount: number;
+    beneficiaryId: string;
+    asset: string;
+  }) {
+    return this.client.post('/api/v1/bread/offramp/execute', data);
+  }
+
+  async setupBreadOfframp(data: {
+    name: string;
+    bvn: string;
+    dob: string;
+    bankCode: string;
+    accountNumber: string;
+  }) {
+    return this.client.post('/api/v1/bread/offramp/setup', data);
+  }
+
+  async lookupBankAccount(data: {
+    bankCode: string;
+    accountNumber: string;
+  }) {
+    return this.client.post('/api/v1/bread/bank/lookup', data);
+  }
+
+  async transferBreadAssets(data: {
+    walletId: string;
+    amount: number;
+    receiver: string;
+    asset: string;
+  }) {
+    return this.client.post('/api/v1/bread/transfer', data);
+  }
+
   // Portfolio endpoints
   async getPortfolio() {
     return this.client.get('/api/v1/portfolio');
@@ -248,20 +312,28 @@ class ApiClient {
     return this.client.get('/api/v1/trading/orders', { params });
   }
 
-  // DeFi Yield (Aave & Compound)
+  // DeFi Yield (Moonwell, Aave, Compound on Base)
+  async getYieldOptions() {
+    return this.client.get('/api/v1/yield/options');
+  }
+
   async getYieldOpportunities() {
     return this.client.get('/api/v1/yield/opportunities');
   }
 
-  async getYieldAPY(protocol?: string) {
-    return this.client.get('/api/v1/yield/apy', {
-      params: { protocol },
+  async getBestYield() {
+    return this.client.get('/api/v1/yield/best');
+  }
+
+  async getYieldEstimate(provider: string, amount: number) {
+    return this.client.get(`/api/v1/yield/estimate/${provider}`, {
+      params: { amount },
     });
   }
 
-  async getYieldEstimate(amount: number, protocol?: string) {
-    return this.client.get('/api/v1/yield/estimate', {
-      params: { amount, protocol },
+  async compareYields(amount: number) {
+    return this.client.get('/api/v1/yield/compare', {
+      params: { amount },
     });
   }
 
@@ -272,16 +344,25 @@ class ApiClient {
     return this.client.post('/api/v1/yield/deposit', data);
   }
 
-  async withdrawYield(data: {
-    protocol: 'aave' | 'compound';
-    token: string;
-    amount: number;
-  }) {
-    return this.client.post('/api/v1/yield/withdraw', data);
-  }
-
   async getYieldPositions() {
     return this.client.get('/api/v1/yield/positions');
+  }
+
+  // Tokenized Stocks (Backed Finance on Arbitrum)
+  async getAvailableTokenizedStocks() {
+    return this.client.get('/api/v1/tokenized-stocks/available');
+  }
+
+  async getTokenizedStockQuote(params: { symbol: string; amount: number }) {
+    return this.client.get('/api/v1/tokenized-stocks/quote', { params });
+  }
+
+  async buyTokenizedStock(data: {
+    symbol: string;
+    amount: number;
+    targetChain?: 'Arbitrum' | 'BinanceSmartChain' | 'Ethereum';
+  }) {
+    return this.client.post('/api/v1/tokenized-stocks/buy', data);
   }
 
   // Funding

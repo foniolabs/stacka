@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Twitter, Github, Linkedin, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 
 export default function LandingFooter() {
   return (
@@ -8,45 +8,33 @@ export default function LandingFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <img
-                src="/stacka-logo.svg"
-                alt="Stacka Logo"
-                className="h-10 w-auto"
-              />
-              <span className="text-2xl font-bold text-white">STACKA</span>
-            </Link>
+            <Link href="/" className="flex items-center gap-2">
+            <img src="/logo.svg" alt="Stacka Logo" className="h-40 w-auto" />
+          </Link>
             <p className="text-text-secondary text-sm mb-4">
               One wallet. All your investments. Powered by AI.
             </p>
             <div className="flex items-center gap-4">
               <a
-                href="https://twitter.com"
+                href="https://x.com/stackahq"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text-secondary hover:text-primary transition-colors"
+                aria-label="Follow us on X (Twitter)"
               >
-                <Twitter className="w-5 h-5" />
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
               </a>
               <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:admin@stacka.xyz"
                 className="text-text-secondary hover:text-primary transition-colors"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-text-secondary hover:text-primary transition-colors"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a
-                href="mailto:support@stacka.app"
-                className="text-text-secondary hover:text-primary transition-colors"
+                aria-label="Email us"
               >
                 <Mail className="w-5 h-5" />
               </a>
@@ -59,7 +47,7 @@ export default function LandingFooter() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/#features"
+                  href="/features"
                   className="text-text-secondary hover:text-white text-sm transition-colors"
                 >
                   Features
@@ -67,26 +55,18 @@ export default function LandingFooter() {
               </li>
               <li>
                 <Link
-                  href="/#pricing"
+                  href="/how-it-works"
                   className="text-text-secondary hover:text-white text-sm transition-colors"
                 >
-                  Pricing
+                  How it Works
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/trade"
+                  href="/about"
                   className="text-text-secondary hover:text-white text-sm transition-colors"
                 >
-                  Markets
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/wallet"
-                  className="text-text-secondary hover:text-white text-sm transition-colors"
-                >
-                  Wallet
+                  About Us
                 </Link>
               </li>
             </ul>
@@ -96,14 +76,6 @@ export default function LandingFooter() {
           <div>
             <h3 className="font-semibold text-white mb-4">Company</h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/about"
-                  className="text-text-secondary hover:text-white text-sm transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
               <li>
                 <Link
                   href="/careers"
@@ -122,7 +94,15 @@ export default function LandingFooter() {
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href="/disclaimer"
+                  className="text-text-secondary hover:text-white text-sm transition-colors"
+                >
+                  Risk Disclaimer
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/waitlist"
                   className="text-text-secondary hover:text-white text-sm transition-colors"
                 >
                   Contact
@@ -149,22 +129,6 @@ export default function LandingFooter() {
                   className="text-text-secondary hover:text-white text-sm transition-colors"
                 >
                   Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/cookies"
-                  className="text-text-secondary hover:text-white text-sm transition-colors"
-                >
-                  Cookie Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/disclaimer"
-                  className="text-text-secondary hover:text-white text-sm transition-colors"
-                >
-                  Risk Disclaimer
                 </Link>
               </li>
             </ul>

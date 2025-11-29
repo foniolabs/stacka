@@ -13,6 +13,10 @@ interface User {
   usdcBalance: number;
   ngnBalance: number;
   kycStatus: string;
+  // Bread wallet fields
+  breadWalletId?: string | null;
+  breadEvmAddress?: string | null;
+  breadSvmAddress?: string | null;
   alpacaAccount?: {
     accountId: string | null;
     accountNumber: string | null;

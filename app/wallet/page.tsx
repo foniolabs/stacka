@@ -14,6 +14,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useAuthStore } from "@/store/authStore";
 import { useWalletStore } from "@/store/walletStore";
 import { apiClient } from "@/lib/api/client";
+import { breadAPI } from "@/lib/api/bread";
 import Header from "@/components/layout/Header";
 import MobileNav from "@/components/layout/MobileNav";
 import Card from "@/components/ui/Card";
@@ -35,7 +36,7 @@ const CHAINS = [
 
 export default function WalletPage() {
   const router = useRouter();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const {
     balance,
     blockchainBalance,
@@ -53,6 +54,8 @@ export default function WalletPage() {
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [breadBalance, setBreadBalance] = useState(0);
+  const [offrampRate, setOfframpRate] = useState(0);
 
   // Wait for zustand to hydrate from localStorage
   useEffect(() => {
@@ -71,7 +74,32 @@ export default function WalletPage() {
     fetchBalance();
     fetchDepositAddress();
     fetchYieldOpportunities();
+    fetchBreadBalance();
+    fetchOfframpRate();
   }, [isHydrated, isAuthenticated, router, fetchBalance, fetchDepositAddress]);
+
+  const fetchBreadBalance = async () => {
+    if (!user?.breadWalletId) return;
+    
+    try {
+      const balanceData = await breadAPI.getBalance(user.breadWalletId, 'base:usdc');
+      const balance = typeof balanceData.balance === 'string' 
+        ? parseFloat(balanceData.balance) 
+        : balanceData.balance;
+      setBreadBalance(balance || 0);
+    } catch (error) {
+      console.error("Failed to fetch Bread balance:", error);
+    }
+  };
+
+  const fetchOfframpRate = async () => {
+    try {
+      const rateData = await breadAPI.getOfframpRate();
+      setOfframpRate(rateData.rate || 0);
+    } catch (error) {
+      console.error("Failed to fetch offramp rate:", error);
+    }
+  };
 
   const fetchYieldOpportunities = async () => {
     try {
@@ -87,13 +115,6 @@ export default function WalletPage() {
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(depositAddress);
-    setCopied(true);
-    toast.success("Address copied to clipboard");
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   const handleRefreshBalance = async () => {
     setIsRefreshing(true);
     toast.loading("Checking blockchain for deposits...", {
@@ -102,6 +123,7 @@ export default function WalletPage() {
 
     try {
       await fetchBalance();
+      await fetchBreadBalance();
       toast.success("Balance refreshed!", {
         id: "refresh-balance",
         duration: 2000,
@@ -147,13 +169,14 @@ export default function WalletPage() {
         <DepositModal
           isOpen={isDepositModalOpen}
           onClose={() => setIsDepositModalOpen(false)}
-          depositAddress={depositAddress}
+          depositAddress={user?.breadEvmAddress || depositAddress}
         />
 
         <WithdrawModal
           isOpen={isWithdrawModalOpen}
           onClose={() => setIsWithdrawModalOpen(false)}
-          balance={balance}
+          balance={breadBalance || blockchainBalance}
+          depositAddress={user?.breadEvmAddress || depositAddress}
         />
 
         {/* Balance Breakdown - Compact */}
@@ -172,9 +195,9 @@ export default function WalletPage() {
             <Card className="text-center p-2.5">
               <p className="text-xs text-text-secondary mb-0.5">DeFi Wallet</p>
               <p className="text-base font-bold text-accent-green">
-                {formatCurrency(blockchainBalance)}
+                {formatCurrency(breadBalance)}
               </p>
-              <p className="text-xs text-text-tertiary mt-0.5">On-chain</p>
+              <p className="text-xs text-text-tertiary mt-0.5">Custodial</p>
             </Card>
             <Card className="text-center p-2.5">
               <p className="text-xs text-text-secondary mb-0.5">Platform</p>
@@ -192,6 +215,59 @@ export default function WalletPage() {
             </Card>
           </div>
         </div>
+
+        {/* Wallet Addresses */}
+        {user?.breadEvmAddress && (
+          <Card>
+            <h3 className="text-sm font-semibold mb-3">Your Wallet Addresses</h3>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-text-secondary mb-1">Base (EVM)</p>
+                <div className="flex items-center gap-2">
+                  <code className="flex-1 bg-background-hover px-3 py-2 rounded-lg text-xs break-all">
+                    {user.breadEvmAddress}
+                  </code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(user.breadEvmAddress || '');
+                      toast.success("EVM address copied!");
+                    }}
+                    className="p-2 rounded-lg bg-background-hover hover:bg-background-card transition-all"
+                  >
+                    <Copy className="w-4 h-4 text-text-secondary" />
+                  </button>
+                </div>
+              </div>
+              {user.breadSvmAddress && (
+                <div>
+                  <p className="text-xs text-text-secondary mb-1">Solana (SVM)</p>
+                  <div className="flex items-center gap-2">
+                    <code className="flex-1 bg-background-hover px-3 py-2 rounded-lg text-xs break-all">
+                      {user.breadSvmAddress}
+                    </code>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(user.breadSvmAddress || '');
+                        toast.success("Solana address copied!");
+                      }}
+                      className="p-2 rounded-lg bg-background-hover hover:bg-background-card transition-all"
+                    >
+                      <Copy className="w-4 h-4 text-text-secondary" />
+                    </button>
+                  </div>
+                </div>
+              )}
+              {offrampRate > 0 && (
+                <div className="pt-2 border-t border-border">
+                  <p className="text-xs text-text-secondary">Current Offramp Rate</p>
+                  <p className="text-sm font-semibold text-accent-green">
+                    1 USDC = ₦{offrampRate.toLocaleString()}
+                  </p>
+                </div>
+              )}
+            </div>
+          </Card>
+        )}
 
         {/* Deposit Instructions */}
         <div>
@@ -238,10 +314,18 @@ export default function WalletPage() {
                 </p>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-background-hover px-4 py-3 rounded-xl text-sm break-all">
-                    {depositAddress || "0x0000...0000"}
+                    {user?.breadEvmAddress || depositAddress || "0x0000...0000"}
                   </code>
                   <button
-                    onClick={handleCopy}
+                    onClick={() => {
+                      const address = user?.breadEvmAddress || depositAddress;
+                      if (address) {
+                        navigator.clipboard.writeText(address);
+                        setCopied(true);
+                        toast.success("Address copied to clipboard");
+                        setTimeout(() => setCopied(false), 2000);
+                      }
+                    }}
                     className="p-3 rounded-xl bg-background-hover hover:bg-background-card transition-all"
                   >
                     {copied ? (
@@ -255,9 +339,9 @@ export default function WalletPage() {
 
               <div className="flex items-center justify-center py-6">
                 <div className="w-48 h-48 bg-white rounded-2xl flex items-center justify-center p-4">
-                  {depositAddress ? (
+                  {user?.breadEvmAddress || depositAddress ? (
                     <QRCodeSVG
-                      value={depositAddress}
+                      value={user?.breadEvmAddress || depositAddress || ''}
                       size={176}
                       level="H"
                       includeMargin={false}

@@ -1,20 +1,23 @@
 import Link from 'next/link';
-import { ArrowRight, Wallet, TrendingUp, Users, ArrowUpRight, Zap, Gift, Bell } from 'lucide-react';
+import { ArrowRight, Wallet, TrendingUp, Users, ArrowUpRight, Zap, Gift, Bell, Star, TrendingDown, Banknote } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import LandingHeader from '@/components/layout/LandingHeader';
 import LandingFooter from '@/components/layout/LandingFooter';
+import Image from 'next/image';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-black">
       <LandingHeader />
 
-      {/* Hero Section - BaseClub Style */}
+      {/* Hero Section - With Human Connection */}
       <section className="relative overflow-hidden pt-24 pb-16 px-4">
         {/* Background gradient with blue tone */}
         <div className="absolute inset-0 bg-gradient-to-br from-accent-blue/20 via-black to-black" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
+
+
 
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center space-y-12 py-12 md:py-20">
@@ -26,12 +29,7 @@ export default function Home() {
                 <span className="block text-primary">FUTURE</span>
               </h1>
 
-              {/* Decorative arrows */}
-              <div className="flex items-center justify-center gap-8">
-                <div className="w-24 h-24 rounded-full bg-primary rotate-12 flex items-center justify-center">
-                  <ArrowUpRight className="w-12 h-12 text-black" strokeWidth={3} />
-                </div>
-              </div>
+
             </div>
 
             {/* Subheading */}
@@ -43,7 +41,7 @@ export default function Home() {
             {/* CTA Button */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Link href="/signup">
-                <Button variant="primary" size="lg" className="text-xl px-12 py-6 font-bold">
+                <Button variant="primary" size="lg" className="text-xl px-12 py-6 font-bold hover:scale-105 transition-transform">
                   GET STARTED
                 </Button>
               </Link>
@@ -51,13 +49,13 @@ export default function Home() {
 
             {/* Stats badges */}
             <div className="flex flex-wrap items-center justify-center gap-4 pt-12">
-              <div className="bg-primary text-black px-6 py-3 rounded-full font-bold">
+              <div className="bg-primary text-black px-6 py-3 rounded-full font-bold hover:scale-110 transition-transform cursor-pointer">
                 10,000+ INVESTORS
               </div>
-              <div className="bg-accent-blue text-white px-6 py-3 rounded-full font-bold">
+              <div className="bg-accent-blue text-white px-6 py-3 rounded-full font-bold hover:scale-110 transition-transform cursor-pointer">
                 $5M+ TRADED
               </div>
-              <div className="bg-white text-black px-6 py-3 rounded-full font-bold">
+              <div className="bg-white text-black px-6 py-3 rounded-full font-bold hover:scale-110 transition-transform cursor-pointer">
                 ZERO FEES
               </div>
             </div>
@@ -194,6 +192,138 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Real People, Real Results - Testimonials */}
+      <section className="py-20 px-4 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-block mb-6">
+              <span className="bg-primary/20 text-primary px-6 py-2 rounded-full font-bold text-sm tracking-wide">
+                TESTIMONIALS
+              </span>
+            </div>
+            <h2 className="font-outfit text-5xl md:text-7xl font-black mb-6">
+              <span className="text-white">REAL PEOPLE,</span>{' '}
+              <span className="text-primary">REAL RESULTS</span>
+            </h2>
+            <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+              Join thousands of young Africans building wealth with STACKA
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Testimonial 1 */}
+            <Card className="bg-background-card border border-border-primary p-8 hover:border-primary transition-all hover:scale-105">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-3xl">
+                  👨🏿‍💼
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-lg">Chidi Okeke</h4>
+                  <p className="text-text-tertiary text-sm">Lagos, Nigeria</p>
+                </div>
+              </div>
+              <div className="flex gap-1 mb-4">
+                {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
+              </div>
+              <p className="text-text-secondary leading-relaxed">
+                "Started with $50, now I have a diversified portfolio worth $2,000. STACKA made investing so simple!"
+              </p>
+              <div className="mt-6 pt-6 border-t border-border-primary">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-accent-green font-bold flex items-center gap-1">
+                    <TrendingUp className="w-4 h-4" />
+                    +287% returns
+                  </span>
+                  <span className="text-text-tertiary">6 months</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Testimonial 2 */}
+            <Card className="bg-background-card border border-border-primary p-8 hover:border-primary transition-all hover:scale-105">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-orange-500 flex items-center justify-center text-3xl">
+                  👩🏾‍💻
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-lg">Amara Johnson</h4>
+                  <p className="text-text-tertiary text-sm">Accra, Ghana</p>
+                </div>
+              </div>
+              <div className="flex gap-1 mb-4">
+                {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
+              </div>
+              <p className="text-text-secondary leading-relaxed">
+                "Finally, an app that understands young Africans! I bought Apple stock with just $20. This is the future."
+              </p>
+              <div className="mt-6 pt-6 border-t border-border-primary">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-accent-green font-bold flex items-center gap-1">
+                    <TrendingUp className="w-4 h-4" />
+                    +142% returns
+                  </span>
+                  <span className="text-text-tertiary">4 months</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Testimonial 3 */}
+            <Card className="bg-background-card border border-border-primary p-8 hover:border-primary transition-all hover:scale-105">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-3xl">
+                  👨🏽‍🎓
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-lg">Kwame Mensah</h4>
+                  <p className="text-text-tertiary text-sm">Nairobi, Kenya</p>
+                </div>
+              </div>
+              <div className="flex gap-1 mb-4">
+                {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
+              </div>
+              <p className="text-text-secondary leading-relaxed">
+                "As a student, I earn passive income from DeFi. Making 8% APY on my savings. Best financial decision ever!"
+              </p>
+              <div className="mt-6 pt-6 border-t border-border-primary">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-accent-green font-bold flex items-center gap-1">
+                    <TrendingUp className="w-4 h-4" />
+                    +8% APY
+                  </span>
+                  <span className="text-text-tertiary">Ongoing</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* User avatars row - Real investors */}
+          <div className="mt-16 text-center">
+            <div className="flex items-center justify-center mb-4">
+              <div className="flex -space-x-4">
+                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
+                </div>
+                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
+                </div>
+                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
+                </div>
+                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
+                </div>
+                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            </div>
+            <p className="text-text-secondary">
+              <span className="text-primary font-bold text-2xl">10,000+</span> investors have already joined
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Waitlist Section */}
       <section className="py-24 px-4 bg-gradient-to-b from-black via-primary/5 to-black">
         <div className="max-w-4xl mx-auto text-center">
@@ -255,9 +385,10 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-32 px-4 bg-background-card">
         <div className="max-w-5xl mx-auto text-center">
-          <div className="inline-block mb-8">
-            <div className="w-32 h-32 rounded-full bg-primary animate-pulse-slow flex items-center justify-center">
-              <span className="text-6xl">💰</span>
+          {/* Icon */}
+          <div className="flex justify-center mb-8">
+            <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center">
+              <Banknote className="w-12 h-12 text-primary" strokeWidth={2} />
             </div>
           </div>
 
