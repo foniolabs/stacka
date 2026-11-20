@@ -1,9 +1,6 @@
-import type { Metadata } from "next";
-import { Inter, Space_Grotesk, Outfit } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Inter_Tight, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
-import AuthInitializer from "@/components/AuthInitializer";
-import PWAInstaller from "@/components/PWAInstaller";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,40 +8,48 @@ const inter = Inter({
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+// Stacka Research type: free stand-ins in the spirit of a light neo-grotesk + grotesk mono
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  weight: ["300", "400", "500"],
+  variable: "--font-display-r",
   display: "swap",
 });
 
-const outfit = Outfit({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  weight: ["400", "500"],
+  variable: "--font-mono-r",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "STACKA - Smart Investment Platform",
+  metadataBase: new URL("https://stacka.xyz"),
+  title: "Stacka | Research and engineering for tokenized finance",
   description:
-    "Invest in stocks, crypto, and DeFi with AI-powered insights. One wallet for all your investments.",
+    "Independent research and engineering on tokenized stocks, ETFs and money market funds, and how TradFi and DeFi meet in emerging markets, starting with Nigeria. A Fonio Labs project.",
   manifest: "/manifest.json",
   icons: {
-    icon: "/stacka.svg",
-    shortcut: "/stacka.svg",
-    apple: "/stacka.svg",
+    icon: [
+      { url: "/brand/icons/favicon.ico", sizes: "any" },
+      { url: "/brand/icons/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/brand/icons/favicon.ico",
+    apple: "/brand/icons/apple-touch-icon.png",
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "STACKA",
+    title: "Stacka Research",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
-  themeColor: "#0066FF",
+};
+
+// Next ignores viewport and themeColor inside `metadata`, so they live here.
+// Zoom is left enabled (the old zoom lock was never applied and is an accessibility problem).
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#ECEBE6",
 };
 
 export default function RootLayout({
@@ -55,36 +60,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${outfit.variable} font-sans antialiased`}
+        className={`${inter.variable} ${interTight.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <AuthInitializer />
-        <PWAInstaller />
         {children}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: "#1A1A1A",
-              color: "#fff",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              borderRadius: "16px",
-              padding: "16px",
-            },
-            success: {
-              iconTheme: {
-                primary: "#C4FF0D",
-                secondary: "#000",
-              },
-            },
-            error: {
-              iconTheme: {
-                primary: "#FF3B30",
-                secondary: "#fff",
-              },
-            },
-          }}
-        />
       </body>
     </html>
   );

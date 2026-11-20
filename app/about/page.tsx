@@ -1,165 +1,76 @@
-"use client";
+import Link from "next/link";
+import ResearchHeader from "@/components/research/ResearchHeader";
+import ResearchFooter from "@/components/research/ResearchFooter";
 
-import { useEffect, useRef } from "react";
-import LandingHeader from "@/components/layout/LandingHeader";
-import LandingFooter from "@/components/layout/LandingFooter";
-import { Target, Users, Mail, Globe } from "lucide-react";
+export const metadata = {
+  title: "About | Stacka Research",
+  description:
+    "Stacka is an independent research and engineering project under Fonio Labs, studying tokenized assets and TradFi–DeFi convergence in emerging markets, starting with Nigeria.",
+};
+
+const PRINCIPLES = [
+  { title: "Emerging markets first", body: "Most tokenization analysis is written for US and European markets. We ask what it means for Nigeria and comparable economies." },
+  { title: "Financial engineering, applied", body: "Pricing, risk and market-structure methods are used to test claims about tokenized assets, not just describe them, and turn the results into models and tools others can check." },
+  { title: "Independent and disclosed", body: "No paid placements. Affiliations and positions are disclosed on every report." },
+];
 
 export default function AboutPage() {
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("slide-up");
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    sectionRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const addToRefs = (el: HTMLDivElement | null) => {
-    if (el && !sectionRefs.current.includes(el)) {
-      sectionRefs.current.push(el);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-black">
-      <LandingHeader />
-
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        {/* Header */}
-        <div ref={addToRefs} className="opacity-0 mb-20">
-          <div className="border-l-4 border-primary pl-6 mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-              About STACKA
-            </h1>
-            <p className="text-lg text-text-secondary">
-              Building the operating system for wealth creation in emerging markets
+    <div className="research min-h-screen">
+      <ResearchHeader />
+      <main>
+        <section className="border-b border-[var(--r-line)]">
+          <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+            <span className="m-label">About</span>
+            <h1 className="r-display mt-4 text-4xl sm:text-5xl md:text-6xl">Research and engineering for how real-world finance moves onchain</h1>
+            <p className="mt-8 text-xl leading-relaxed text-[var(--r-ink-2)]">
+              Stacka is an independent research and engineering project under Fonio Labs. It studies and models tokenized stocks, ETFs and money market funds, and how traditional finance and DeFi connect, starting with Nigeria and its regulators, banks and crypto-native institutions.
             </p>
           </div>
+        </section>
 
-          <p className="text-xl text-text-primary leading-relaxed">
-            STACKA is building the operating system for wealth creation in
-            emerging markets by unifying stocks, crypto and DeFi on stablecoin
-            rails. Our mission is to democratize access to global investable
-            assets with a mobile-first, low-cost experience.
-          </p>
-        </div>
-
-        {/* Vision Section */}
-        <div ref={addToRefs} className="opacity-0 mb-20">
-          <div className="flex gap-6 mb-6">
-            <div className="w-1 bg-primary rounded-full" />
-            <div>
-              <h2 className="text-2xl font-bold text-white mb-4">Our Vision</h2>
-              <p className="text-text-secondary leading-relaxed mb-8">
-                By 2030 we aim to reach <strong className="text-white">5M users</strong> and{" "}
-                <strong className="text-white">$5B AUM</strong>. We measure success by real outcomes:
+        <section className="border-b border-[var(--r-line)]">
+          <div className="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 md:grid-cols-[1fr_1.6fr] md:py-28 lg:px-8">
+            <span className="m-label self-start justify-self-start">Why we exist</span>
+            <div className="space-y-5 text-lg leading-relaxed text-[var(--r-ink-2)]">
+              <p>
+                Tokenization is turning securities and funds into programmable assets. Whether that expands access in emerging markets depends on details: legal structure, custody, redemption, regulation and the banking rails that connect people to the system.
               </p>
-
-              <div className="space-y-3">
-                <div className="flex gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
-                  <p className="text-text-secondary">Students investing $10/month who retire comfortably</p>
-                </div>
-                <div className="flex gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
-                  <p className="text-text-secondary">Single mothers building college funds</p>
-                </div>
-                <div className="flex gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
-                  <p className="text-text-secondary">Diaspora supporting families back home</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Team Section */}
-        <div ref={addToRefs} className="opacity-0 mb-20">
-          <div className="flex gap-6">
-            <div className="w-1 bg-primary rounded-full" />
-            <div>
-              <h2 className="text-2xl font-bold text-white mb-4">Team</h2>
-              <p className="text-text-secondary leading-relaxed">
-                Founded by <strong className="text-white">Emmanuel Doji</strong> (Founder & CEO, based in Jos),
-                STACKA combines product, engineering and blockchain expertise to deliver an
-                approachable platform for users across Africa and beyond.
+              <p>
+                The work is led by someone building tokenized-finance products who is also completing a master&apos;s degree in financial engineering. The aim is to connect rigorous academic methods to how the financial sector actually works, through research, models and working tools.
+              </p>
+              <p>
+                Stacka began as an investing app. It is now a research and engineering project: we study the market properly, then build models and tools on what we find.
               </p>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Contact Section */}
-        <div ref={addToRefs} className="opacity-0">
-          <div className="flex gap-6">
-            <div className="w-1 bg-primary rounded-full" />
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-white mb-6">Contact</h2>
-
-              <div className="space-y-4">
-                <a
-                  href="mailto:admin@stacka.xyz"
-                  className="flex items-center gap-4 p-4 border border-border-primary rounded-lg hover:border-primary hover:bg-background-elevated transition-all group"
-                >
-                  <Mail className="w-5 h-5 text-primary" />
-                  <div>
-                    <div className="text-xs text-text-secondary mb-1">Email</div>
-                    <div className="text-white group-hover:text-primary transition-colors">
-                      admin@stacka.xyz
-                    </div>
-                  </div>
-                </a>
-
-                <a
-                  href="https://stacka.xyz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 border border-border-primary rounded-lg hover:border-primary hover:bg-background-elevated transition-all group"
-                >
-                  <Globe className="w-5 h-5 text-primary" />
-                  <div>
-                    <div className="text-xs text-text-secondary mb-1">Website</div>
-                    <div className="text-white group-hover:text-primary transition-colors">
-                      stacka.xyz
-                    </div>
-                  </div>
-                </a>
-              </div>
+        <section className="border-b border-[var(--r-line)]">
+          <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+            <span className="m-label">Principles</span>
+            <div className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-3">
+              {PRINCIPLES.map((p) => (
+                <article key={p.title} className="border-t border-[var(--r-ink)] pt-5">
+                  <h2 className="r-display text-xl">{p.title}</h2>
+                  <p className="mt-4 leading-relaxed text-[var(--r-ink-3)]">{p.body}</p>
+                </article>
+              ))}
             </div>
           </div>
-        </div>
+        </section>
+
+        <section>
+          <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 md:py-28 lg:px-8">
+            <h2 className="r-display text-3xl sm:text-4xl">Get in touch or follow along</h2>
+            <p className="mt-5 text-lg leading-relaxed text-[var(--r-ink-2)]">
+              Researchers, regulators, banks and builders working on tokenized assets in emerging markets: we want to hear from you.
+            </p>
+            <Link href="/waitlist" className="r-btn r-btn-primary mt-10">Get new research</Link>
+          </div>
+        </section>
       </main>
-
-      <LandingFooter />
-
-      <style jsx global>{`
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .slide-up {
-          animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-      `}</style>
+      <ResearchFooter />
     </div>
   );
 }

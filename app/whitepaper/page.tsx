@@ -3,58 +3,35 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import Button from "@/components/ui/Button";
+import ResearchHeader from "@/components/research/ResearchHeader";
+import ResearchFooter from "@/components/research/ResearchFooter";
 import { whitepaperContent } from "@/lib/whitepaper";
 
 export default function WhitepaperPage() {
-
-  const handleDownload = () => {
-    window.print();
-  };
-
   return (
-    <div className="min-h-screen bg-background p-8 text-text-primary">
-      <div className="max-w-4xl mx-auto bg-background-card rounded-2xl shadow-lg overflow-hidden">
-        {/* Cover Image */}
-        <div className="w-full">
-          <img
-            src="/Stacka-cover.png"
-            alt="STACKA Whitepaper Cover"
-            className="w-full h-auto object-cover"
-          />
-        </div>
-        {/* Header */}
-        <div className="w-full p-6 flex items-center gap-4">
-          <img src="/stacka-logo.svg" alt="STACKA" className="h-12 w-auto" />
-          <div>
-            <h1 className="text-2xl font-bold">STACKA WHITEPAPER</h1>
-            <p className="text-sm text-text-secondary">
-              Version 1.0 | November 2025
-            </p>
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <Button variant="ghost" onClick={() => window.open("/", "_blank")}>
-              Open Site
-            </Button>
-            <Button variant="primary" onClick={handleDownload}>
-              Download PDF
-            </Button>
-          </div>
+    <div className="research min-h-screen">
+      <ResearchHeader />
+      <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+        <span className="m-label">Archive</span>
+        <h1 className="r-display mt-4 text-4xl sm:text-5xl">Stacka product whitepaper</h1>
+        <p className="mt-4 text-sm text-[var(--r-ink-3)]">Version 1.0 · November 2025</p>
+
+        <div role="note" className="mt-8 border border-[var(--r-line)] bg-[var(--r-canvas-2)] p-5 text-[var(--r-ink-2)]">
+          <p className="leading-relaxed">
+            This document describes Stacka&apos;s earlier plan to build an investing app. Stacka is now an independent research and engineering project under Fonio Labs, so this paper is kept for reference only and does not describe a current product or offer.
+          </p>
+          <button type="button" onClick={() => window.print()} className="r-btn r-btn-ghost mt-4">Print or save as PDF</button>
         </div>
 
-        <div className="p-8 prose prose-invert max-w-none">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
-          >
+        <article className="prose max-w-none pt-10 prose-headings:font-medium prose-a:text-[#111] prose-table:text-sm">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
             {whitepaperContent}
           </ReactMarkdown>
-
           <hr />
-
           <p className="text-sm">Copyright © 2025 STACKA Technologies Ltd.</p>
-        </div>
-      </div>
+        </article>
+      </main>
+      <ResearchFooter />
     </div>
   );
 }

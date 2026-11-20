@@ -1,55 +1,17 @@
-const CACHE_NAME = 'stacka-v1';
-const urlsToCache = [
-  '/',
-  '/login',
-  '/signup',
-  '/dashboard',
-  '/portfolio',
-  '/wallet',
-  '/trade',
-  '/manifest.json',
-  '/stacka-logo.svg'
-];
+// Kill switch. This site no longer uses a service worker.
+// Visitors who loaded the old site still have the previous cache-first worker installed,
+// which would keep serving old pages. When their browser fetches this file it clears the
+// caches, unregisters itself and reloads open tabs. Safe to delete after a few months.
+self.addEventListener("install", () => self.skipWaiting());
 
-// Install service worker
-self.addEventListener('install', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((k) => caches.delete(k)));
+      await self.registration.unregister();
+      const clients = await self.clients.matchAll({ type: "window" });
+      clients.forEach((c) => c.navigate(c.url));
+    })()
   );
-  self.skipWaiting();
-});
-
-// Fetch from cache or network
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
-  );
-});
-
-// Activate service worker
-self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (!cacheWhitelist.includes(cacheName)) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-  self.clients.claim();
 });

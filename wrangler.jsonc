@@ -1,0 +1,11 @@
+{
+  // Static site: `npm run build` exports to ./out, and Workers serves that folder as static assets.
+  // "name" must match the Worker name in the Cloudflare dashboard.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "stacka",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}

@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import Button from "@/components/ui/Button";
-import LandingHeader from "@/components/layout/LandingHeader";
-import LandingFooter from "@/components/layout/LandingFooter";
+import ResearchHeader from "@/components/research/ResearchHeader";
+import ResearchFooter from "@/components/research/ResearchFooter";
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-black">
-      <LandingHeader />
+    <div className="research min-h-screen">
+      <ResearchHeader />
 
-      <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+        <div className="r-dark rounded-3xl p-6 sm:p-10">
         <Link href="/">
           <Button variant="ghost" className="mb-8 gap-2">
             <ArrowLeft className="w-4 h-4" />
@@ -149,9 +150,10 @@ export default function TermsPage() {
             </section>
           </div>
         </div>
+        </div>
       </div>
 
-      <LandingFooter />
+      <ResearchFooter />
     </div>
   );
 }

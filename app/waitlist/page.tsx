@@ -1,10 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, CheckCircle2, Loader2 } from "lucide-react";
-import Button from "@/components/ui/Button";
-import LandingHeader from "@/components/layout/LandingHeader";
-import LandingFooter from "@/components/layout/LandingFooter";
+import Link from "next/link";
+import { CheckCircle2, Loader2 } from "lucide-react";
+import ResearchHeader from "@/components/research/ResearchHeader";
+import ResearchFooter from "@/components/research/ResearchFooter";
+
+const WANTS = [
+  "New reports on tokenized stocks, ETFs and money market funds",
+  "Analysis of CBN and bank developments affecting tokenized assets in Nigeria",
+  "Occasional notes on the research agenda and methods",
+];
 
 export default function WaitlistPage() {
   const [email, setEmail] = useState("");
@@ -18,17 +24,13 @@ export default function WaitlistPage() {
     setError("");
 
     try {
-      // Using Web3Forms (free, no backend needed)
+      // Web3Forms (no backend needed)
       const formData = new FormData(e.target as HTMLFormElement);
       formData.append("access_key", "1403a1ee-9636-48fa-b7f8-af582678c03b");
-      formData.append("subject", "New STACKA Waitlist Signup");
-      formData.append("from_name", "STACKA Waitlist");
+      formData.append("subject", "New Stacka Research subscriber");
+      formData.append("from_name", "Stacka Research");
 
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-      });
-
+      const response = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
       const data = await response.json();
 
       if (data.success) {
@@ -37,178 +39,72 @@ export default function WaitlistPage() {
       } else {
         setError("Something went wrong. Please try again.");
       }
-    } catch (err) {
-      setError("Failed to join waitlist. Please try again.");
+    } catch {
+      setError("Could not subscribe. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      <LandingHeader />
-
-      <div className="flex items-center justify-center p-4 pt-24">
-        <div className="max-w-2xl w-full">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <img
-              src="/stacka-logo.svg"
-              alt="STACKA"
-              className="h-16 w-auto mx-auto mb-4"
-            />
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-              Join the Waitlist
-            </h1>
-            <p className="text-xl text-text-secondary">
-              Be among the first to access STACKA when we launch
+    <div className="research min-h-screen">
+      <ResearchHeader />
+      <main className="mx-auto max-w-5xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+        <div className="grid gap-12 md:grid-cols-2 md:gap-16">
+          <div>
+            <span className="m-label">Subscribe</span>
+            <h1 className="r-display mt-4 text-4xl sm:text-5xl">Get new research</h1>
+            <p className="mt-6 text-lg leading-relaxed text-[var(--r-ink-2)]">
+              Reports, models and tools on tokenized assets and the meeting of TradFi and DeFi in emerging markets, delivered when they are published.
             </p>
+            <ul className="mt-8 space-y-4">
+              {WANTS.map((w) => (
+                <li key={w} className="flex items-start gap-3 text-[var(--r-ink-2)]">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--r-brand)]" aria-hidden strokeWidth={1.5} />
+                  <span>{w}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
-        {!submitted ? (
-          <div className="bg-background-card border border-border-primary rounded-2xl p-8 md:p-12">
-            {/* Benefits */}
-            <div className="mb-8 space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                </div>
+          <div className="self-start r-card p-8 md:p-10">
+            {!submitted ? (
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <h3 className="text-white font-semibold mb-1">Early Access</h3>
-                  <p className="text-text-secondary text-sm">
-                    Get priority access before the public launch
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-1">
-                    Exclusive Benefits
-                  </h3>
-                  <p className="text-text-secondary text-sm">
-                    Special perks and bonuses for early adopters
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-1">
-                    Launch Updates
-                  </h3>
-                  <p className="text-text-secondary text-sm">
-                    Stay informed about our progress and launch date
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="email" className="sr-only">
-                  Email address
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
+                  <label htmlFor="email" className="r-mono text-[var(--r-ink-3)]">Email address</label>
                   <input
                     type="email"
                     id="email"
                     name="email"
                     required
+                    autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email address"
-                    className="w-full pl-12 pr-4 py-4 bg-background border border-border-primary rounded-xl text-white placeholder-text-secondary focus:outline-none focus:border-primary transition-colors"
+                    placeholder="you@example.com"
+                    aria-describedby={error ? "form-error" : undefined}
+                    className="mt-2 min-h-[48px] w-full rounded-lg border border-[var(--r-line)] bg-[#222220] px-4 text-base text-[var(--r-ink)] placeholder:text-[var(--r-ink-3)] focus:border-[var(--r-brand)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--r-brand)]"
                   />
                 </div>
+                {error && <p id="form-error" role="alert" className="text-sm text-red-300">{error}</p>}
+                <button type="submit" disabled={loading} className="r-btn r-btn-primary w-full justify-center disabled:opacity-60">
+                  {loading ? (<><Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Subscribing…</>) : "Subscribe"}
+                </button>
+                <p className="text-sm text-[var(--r-ink-3)]">
+                  Research updates only. No investment tips, no sharing of your address. See our <Link className="r-link" href="/privacy">privacy policy</Link>.
+                </p>
+              </form>
+            ) : (
+              <div role="status" className="text-center">
+                <CheckCircle2 className="mx-auto h-10 w-10 text-[var(--r-brand)]" aria-hidden strokeWidth={1.5} />
+                <h2 className="r-display mt-5 text-2xl">You&apos;re subscribed</h2>
+                <p className="mt-3 text-[var(--r-ink-3)]">Thank you. We&apos;ll email you when new research is published.</p>
+                <Link href="/" className="r-btn r-btn-ghost mt-6">Back to home</Link>
               </div>
-
-              {error && (
-                <p className="text-red-500 text-sm">{error}</p>
-              )}
-
-              <Button
-                type="submit"
-                variant="primary"
-                disabled={loading}
-                className="w-full py-4 text-lg"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Joining...
-                  </>
-                ) : (
-                  "Join Waitlist"
-                )}
-              </Button>
-            </form>
-
-            <p className="text-text-secondary text-sm text-center mt-6">
-              We respect your privacy. No spam, ever.
-            </p>
-          </div>
-        ) : (
-          <div className="bg-background-card border border-primary rounded-2xl p-8 md:p-12 text-center">
-            <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-8 h-8 text-primary" />
-            </div>
-            <h2 className="text-2xl font-bold text-white mb-3">
-              You're on the list!
-            </h2>
-            <p className="text-text-secondary mb-6">
-              Thank you for joining the STACKA waitlist. We'll keep you updated on
-              our launch progress.
-            </p>
-            <Button
-              variant="ghost"
-              onClick={() => (window.location.href = "/")}
-              className="mx-auto"
-            >
-              Back to Home
-            </Button>
-          </div>
-        )}
-
-        {/* Stats */}
-        <div className="mt-12 grid grid-cols-3 gap-4 md:gap-8">
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-              500M+
-            </div>
-            <div className="text-sm text-text-secondary">
-              Addressable Users
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-              $10
-            </div>
-            <div className="text-sm text-text-secondary">
-              Min. Investment
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-              24/7
-            </div>
-            <div className="text-sm text-text-secondary">
-              Trading Access
-            </div>
+            )}
           </div>
         </div>
-        </div>
-      </div>
-
-      <LandingFooter />
+      </main>
+      <ResearchFooter />
     </div>
   );
 }

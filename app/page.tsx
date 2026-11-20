@@ -1,422 +1,288 @@
-import Link from 'next/link';
-import { ArrowRight, Wallet, TrendingUp, Users, ArrowUpRight, Zap, Gift, Bell, Star, TrendingDown, Banknote } from 'lucide-react';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
-import LandingHeader from '@/components/layout/LandingHeader';
-import LandingFooter from '@/components/layout/LandingFooter';
-import Image from 'next/image';
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import ResearchHeader from "@/components/research/ResearchHeader";
+import ResearchFooter from "@/components/research/ResearchFooter";
+import ReportViewer from "@/components/research/ReportViewer";
+import Newsletter from "@/components/research/Newsletter";
+import { GridThumb, HourglassArt, IllusPanel } from "@/components/research/Illustrations";
+
+type Audience = {
+  id: string;
+  label: string;
+  title: string;
+  body: string;
+  variant: "diamond" | "circles" | "capsules";
+  tiles?: string[];
+  links?: { label: string; href: string }[];
+  href: string;
+};
+
+const AUDIENCES: Audience[] = [
+  {
+    id: "regulators",
+    label: "Regulators",
+    title: "Clear analysis for policymakers and regulators",
+    body: "How tokenized securities and funds fit within CBN and securities rules in Nigeria, and where the gaps are, mapped rule by rule.",
+    variant: "diamond",
+    tiles: ["CBN", "SEC Nigeria", "Stablecoins"],
+    href: "/#nigeria",
+  },
+  {
+    id: "banks",
+    label: "Banks & fintechs",
+    title: "Evidence for institutions entering tokenized markets",
+    body: "On-ramps, custody and settlement: how incumbent banks and new financial institutions can work with tokenized assets, and what it costs.",
+    variant: "circles",
+    tiles: ["Custody", "On-ramps", "Settlement"],
+    href: "/#coverage",
+  },
+  {
+    id: "investors",
+    label: "Investors",
+    title: "Know exactly what you hold onchain",
+    body: "Structure, pricing, redemption and risk for tokenized equities, ETFs and money market funds, explained from primary sources.",
+    variant: "capsules",
+    links: [
+      { label: "Tokenized equities", href: "/#coverage" },
+      { label: "Tokenized ETFs", href: "/#coverage" },
+      { label: "Money market funds", href: "/#coverage" },
+      { label: "Risk", href: "/#agenda" },
+    ],
+    href: "/#agenda",
+  },
+];
+
+const TOOLS = [
+  {
+    title: "Nigeria rules tracker",
+    status: "Preview",
+    href: "/tracker",
+    companion: "Companion to report 03",
+    body: "A dated, structured record of CBN and SEC Nigeria rules on tokenized securities, funds and stablecoins, with a primary-source link for every entry.",
+    points: [
+      "Status for each rule: draft, in force or superseded",
+      "Mapped to activities: issue, hold, offer, transfer",
+      "Every entry links to the primary document",
+    ],
+    method: "Built from primary documents. Where sources disagree, the conflict is flagged, not smoothed over.",
+  },
+  {
+    title: "NAV and premium/discount monitor",
+    status: "Planned",
+    companion: "Companion to report 02",
+    body: "An open tracker of how tokenized money market funds, ETFs and equities trade against their net asset value, with the method and data sources published.",
+    points: [
+      "Premium and discount versus NAV over time",
+      "Effect of redemption windows and mint and redeem schedules",
+      "Method, assumptions and data sources documented",
+    ],
+    method: "Open method. Assets that rarely trade are shown against NAV only, with no invented price.",
+  },
+];
+
+const NIGERIA = [
+  { title: "Regulators", body: "How monetary and securities rules shape what can be issued, held and offered." },
+  { title: "Traditional banks", body: "Incumbent banks as on- and off-ramps, custodians and settlement partners." },
+  { title: "Crypto-native banks", body: "How new institutions and dollar stablecoins already move value." },
+];
+
+const METHOD = [
+  { title: "Primary sources", body: "Filings, regulation and onchain data" },
+  { title: "Open models and code", body: "Methods published, code shared where we can" },
+  { title: "Disclosed interests", body: "No paid placements, ever" },
+];
+
+function Discover({ href, children = "Discover" }: { href: string; children?: React.ReactNode }) {
+  return (
+    <Link href={href} className="m-discover">
+      {children}
+      <span className="m-dot"><ArrowRight className="h-4 w-4" aria-hidden /></span>
+    </Link>
+  );
+}
+
+function Trio({ items, linkHref }: { items: { title: string; body: string }[]; linkHref: string }) {
+  return (
+    <div className="mt-14 grid divide-y divide-[var(--r-line)] border-y border-[var(--r-line)] md:grid-cols-3 md:divide-x md:divide-y-0">
+      {items.map((it) => (
+        <div key={it.title} className="px-6 py-10 text-center">
+          <h3 className="r-display text-2xl">{it.title}</h3>
+          <p className="mx-auto mt-3 max-w-[16rem] text-[0.9375rem] leading-relaxed text-[var(--r-ink-3)]">{it.body}</p>
+          <Link href={linkHref} className="m-more mt-6">Read more <ArrowRight className="h-4 w-4" aria-hidden /></Link>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black">
-      <LandingHeader />
+    <div className="research min-h-screen">
+      <ResearchHeader />
 
-      {/* Hero Section - With Human Connection */}
-      <section className="relative overflow-hidden pt-24 pb-16 px-4">
-        {/* Background gradient with blue tone */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent-blue/20 via-black to-black" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
-
-
-
-        <div className="relative max-w-7xl mx-auto">
-          <div className="text-center space-y-12 py-12 md:py-20">
-            {/* Main Headline - Bold & Huge */}
-            <div className="space-y-6">
-              <h1 className="font-outfit text-7xl md:text-9xl font-black tracking-tighter leading-none">
-                <span className="block text-white">#INVEST</span>
-                <span className="block text-white">IN THE</span>
-                <span className="block text-primary">FUTURE</span>
-              </h1>
-
-
-            </div>
-
-            {/* Subheading */}
-            <p className="text-2xl md:text-3xl font-semibold text-text-secondary max-w-3xl mx-auto">
-              One platform for stocks, crypto & DeFi.<br />
-              Built for <span className="text-primary">young wealth builders</span>.
-            </p>
-
-            {/* CTA Button */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-              <Link href="/signup">
-                <Button variant="primary" size="lg" className="text-xl px-12 py-6 font-bold hover:scale-105 transition-transform">
-                  GET STARTED
-                </Button>
-              </Link>
-            </div>
-
-            {/* Stats badges */}
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-12">
-              <div className="bg-primary text-black px-6 py-3 rounded-full font-bold hover:scale-110 transition-transform cursor-pointer">
-                10,000+ INVESTORS
-              </div>
-              <div className="bg-accent-blue text-white px-6 py-3 rounded-full font-bold hover:scale-110 transition-transform cursor-pointer">
-                $5M+ TRADED
-              </div>
-              <div className="bg-white text-black px-6 py-3 rounded-full font-bold hover:scale-110 transition-transform cursor-pointer">
-                ZERO FEES
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it Works - BaseClub Style */}
-      <section className="py-20 px-4 bg-background-card">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-outfit text-5xl md:text-7xl font-black mb-6">
-              <span className="text-white">HOW IT</span>{' '}
-              <span className="text-primary">WORKS</span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Step 1 */}
-            <div className="relative">
-              <Card className="bg-accent-blue/10 border-2 border-accent-blue p-8 text-center">
-                <div className="w-20 h-20 rounded-3xl bg-accent-blue text-white flex items-center justify-center mx-auto mb-6">
-                  <Wallet className="w-10 h-10" strokeWidth={2.5} />
-                </div>
-                <div className="bg-accent-blue text-white text-sm font-bold px-4 py-2 rounded-full inline-block mb-4">
-                  STEP 1
-                </div>
-                <h3 className="text-2xl font-black mb-4">CREATE WALLET</h3>
-                <p className="text-lg text-text-secondary">
-                  Sign up and get instant access to your USDC wallet. No KYC required to start.
+      <main>
+        {/* Hero: framed blueprint grid with converging line art */}
+        <section>
+          <div className="m-frame mx-auto">
+            <div className="m-grid" />
+            <HourglassArt />
+            <div className="relative mx-auto grid min-h-[30rem] max-w-6xl items-center gap-12 px-5 py-20 md:grid-cols-[1.15fr_0.85fr] md:py-28 lg:px-8">
+              <div>
+                <h1 className="r-display r-reveal max-w-xl text-5xl sm:text-6xl lg:text-[4.25rem]">Open research and engineering for tokenized finance</h1>
+                <p className="r-reveal mt-7 max-w-md text-lg leading-relaxed text-[var(--r-ink-2)]" style={{ animationDelay: ".08s" }}>
+                  Independent research, models and tooling for tokenized stocks, ETFs and money market funds, and how TradFi and DeFi connect in emerging markets, starting with Nigeria.
                 </p>
-              </Card>
-              <div className="hidden md:block absolute -right-4 top-1/2 -translate-y-1/2 z-10">
-                <ArrowRight className="w-8 h-8 text-primary" strokeWidth={3} />
               </div>
-            </div>
-
-            {/* Step 2 */}
-            <div className="relative">
-              <Card className="bg-primary/10 border-2 border-primary p-8 text-center">
-                <div className="w-20 h-20 rounded-3xl bg-primary text-black flex items-center justify-center mx-auto mb-6">
-                  <TrendingUp className="w-10 h-10" strokeWidth={2.5} />
+              <dl className="r-reveal flex flex-row flex-wrap gap-x-10 gap-y-6 md:flex-col md:items-end md:gap-9" style={{ animationDelay: ".16s" }}>
+                <div className="md:text-right">
+                  <dt className="r-mono text-[var(--r-ink-3)]">Reports on the agenda</dt>
+                  <dd className="r-display mt-2 text-4xl md:text-5xl">5</dd>
                 </div>
-                <div className="bg-primary text-black text-sm font-bold px-4 py-2 rounded-full inline-block mb-4">
-                  STEP 2
+                <div className="md:text-right">
+                  <dt className="r-mono text-[var(--r-ink-3)]">Coverage areas</dt>
+                  <dd className="r-display mt-2 text-4xl md:text-5xl">4</dd>
                 </div>
-                <h3 className="text-2xl font-black mb-4">CHOOSE ASSETS</h3>
-                <p className="text-lg text-text-secondary">
-                  Browse Nigerian stocks, US stocks, crypto, and DeFi protocols. All in one place.
-                </p>
-              </Card>
-              <div className="hidden md:block absolute -right-4 top-1/2 -translate-y-1/2 z-10">
-                <ArrowRight className="w-8 h-8 text-primary" strokeWidth={3} />
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div>
-              <Card className="bg-accent-green/10 border-2 border-accent-green p-8 text-center">
-                <div className="w-20 h-20 rounded-3xl bg-accent-green text-black flex items-center justify-center mx-auto mb-6">
-                  <Users className="w-10 h-10" strokeWidth={2.5} />
+                <div className="md:text-right">
+                  <dt className="r-mono text-[var(--r-ink-3)]">Tools in development</dt>
+                  <dd className="r-display mt-2 text-4xl md:text-5xl">{TOOLS.length}</dd>
                 </div>
-                <div className="bg-accent-green text-black text-sm font-bold px-4 py-2 rounded-full inline-block mb-4">
-                  STEP 3
-                </div>
-                <h3 className="text-2xl font-black mb-4">START INVESTING</h3>
-                <p className="text-lg text-text-secondary">
-                  Buy stocks and crypto with as little as $10. Watch your portfolio grow.
-                </p>
-              </Card>
+              </dl>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Investment Options */}
-      <section className="py-20 px-4 bg-background-card">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-outfit text-5xl md:text-7xl font-black mb-6">
-              <span className="text-white">WHAT YOU CAN</span>{' '}
-              <span className="text-primary">INVEST IN</span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              {
-                name: 'NIGERIAN STOCKS',
-                desc: 'MTN, Dangote, Zenith Bank & more',
-                color: 'accent-blue',
-                amount: '₦50',
-                subtext: 'minimum'
-              },
-              {
-                name: 'US STOCKS & ETFs',
-                desc: 'Apple, Tesla, S&P 500 & 5,000+',
-                color: 'accent-purple',
-                amount: '$1',
-                subtext: 'per share'
-              },
-              {
-                name: 'CRYPTOCURRENCY',
-                desc: 'Bitcoin, Ethereum & altcoins',
-                color: 'accent-orange',
-                amount: '$10',
-                subtext: 'to start'
-              },
-              {
-                name: 'DeFi YIELDS',
-                desc: 'Earn 4-8% APY on stablecoins',
-                color: 'accent-green',
-                amount: '8%',
-                subtext: 'APY'
-              },
-            ].map((item) => (
-              <Card key={item.name} hover className="p-8 bg-background-hover border-2 border-border hover:border-primary transition-all">
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <h3 className="text-2xl font-black mb-2">{item.name}</h3>
-                    <p className="text-text-secondary">{item.desc}</p>
+        {/* Three audiences */}
+        {AUDIENCES.map((a) => (
+          <section key={a.id} id={a.id} className="scroll-mt-20">
+            <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:gap-16 md:py-24 lg:px-8">
+              <div>
+                <span className="m-label">{a.label}</span>
+                <h2 className="r-display mt-5 max-w-md text-3xl sm:text-4xl">{a.title}</h2>
+                <p className="mt-5 max-w-md leading-relaxed text-[var(--r-ink-3)]">{a.body}</p>
+                <div className="mt-7"><Discover href={a.href} /></div>
+                {a.tiles && (
+                  <div className="mt-10 flex flex-wrap gap-2">
+                    {a.tiles.map((t) => <span key={t} className="m-tile">{t}</span>)}
                   </div>
-                  <div className={`text-${item.color} text-right`}>
-                    <div className="text-3xl font-black">{item.amount}</div>
-                    <div className="text-sm text-text-tertiary">{item.subtext}</div>
-                  </div>
-                </div>
-                <div className={`h-2 w-full rounded-full bg-${item.color}/20`}>
-                  <div className={`h-full w-3/4 rounded-full bg-${item.color}`} />
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Real People, Real Results - Testimonials */}
-      <section className="py-20 px-4 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-block mb-6">
-              <span className="bg-primary/20 text-primary px-6 py-2 rounded-full font-bold text-sm tracking-wide">
-                TESTIMONIALS
-              </span>
+                )}
+                {a.links && (
+                  <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-[0.9375rem]">
+                    {a.links.map((l) => (
+                      <li key={l.label}><Link href={l.href} className="m-more">{l.label} <ArrowUpRight className="h-3.5 w-3.5" aria-hidden /></Link></li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <IllusPanel variant={a.variant} />
             </div>
-            <h2 className="font-outfit text-5xl md:text-7xl font-black mb-6">
-              <span className="text-white">REAL PEOPLE,</span>{' '}
-              <span className="text-primary">REAL RESULTS</span>
-            </h2>
-            <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              Join thousands of young Africans building wealth with STACKA
+          </section>
+        ))}
+
+        {/* Coverage: foundations tree */}
+        <section id="coverage" className="scroll-mt-20 border-t border-[var(--r-line)]">
+          <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 md:py-28 lg:px-8">
+            <span className="m-label">Coverage</span>
+            <h2 className="r-display mt-5 text-3xl sm:text-4xl md:text-5xl">The assets and markets we study</h2>
+            <div className="mx-auto mt-14 max-w-2xl text-left">
+              <article className="m-node mx-auto max-w-xs">
+                <GridThumb shape="square-circle" />
+                <div className="m-node-foot"><span>Tokenized equities</span><ArrowUpRight className="h-4 w-4 opacity-60" aria-hidden /></div>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--r-ink-3)]">What holders own versus a synthetic price exposure.</p>
+              </article>
+              <div className="m-conn-stem hidden sm:block" aria-hidden />
+              <div className="m-conn mx-auto hidden w-1/2 sm:block" aria-hidden />
+              <div className="mt-4 grid gap-4 sm:mt-0 sm:grid-cols-2">
+                <article className="m-node m-node-dark">
+                  <GridThumb shape="double-circle" tone="dark" />
+                  <div className="m-node-foot"><span>Tokenized ETFs</span><ArrowUpRight className="h-4 w-4 opacity-60" aria-hidden /></div>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--r-ink-3)]">NAV integrity, creation and redemption, secondary liquidity.</p>
+                </article>
+                <article className="m-node m-node-dark">
+                  <GridThumb shape="circle" tone="dark" />
+                  <div className="m-node-foot"><span>Money market funds</span><ArrowUpRight className="h-4 w-4 opacity-60" aria-hidden /></div>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--r-ink-3)]">Tokenized treasuries as collateral, yield and settlement asset.</p>
+                </article>
+              </div>
+            </div>
+            <p className="mx-auto mt-10 max-w-md text-sm leading-relaxed text-[var(--r-ink-3)]">
+              Across all three we study and model market structure: custody, oracles, compliance layers and settlement.
             </p>
           </div>
+        </section>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Testimonial 1 */}
-            <Card className="bg-background-card border border-border-primary p-8 hover:border-primary transition-all hover:scale-105">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-3xl">
-                  👨🏿‍💼
-                </div>
-                <div>
-                  <h4 className="text-white font-bold text-lg">Chidi Okeke</h4>
-                  <p className="text-text-tertiary text-sm">Lagos, Nigeria</p>
-                </div>
-              </div>
-              <div className="flex gap-1 mb-4">
-                {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
-              </div>
-              <p className="text-text-secondary leading-relaxed">
-                "Started with $50, now I have a diversified portfolio worth $2,000. STACKA made investing so simple!"
-              </p>
-              <div className="mt-6 pt-6 border-t border-border-primary">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-accent-green font-bold flex items-center gap-1">
-                    <TrendingUp className="w-4 h-4" />
-                    +287% returns
-                  </span>
-                  <span className="text-text-tertiary">6 months</span>
-                </div>
-              </div>
-            </Card>
-
-            {/* Testimonial 2 */}
-            <Card className="bg-background-card border border-border-primary p-8 hover:border-primary transition-all hover:scale-105">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-orange-500 flex items-center justify-center text-3xl">
-                  👩🏾‍💻
-                </div>
-                <div>
-                  <h4 className="text-white font-bold text-lg">Amara Johnson</h4>
-                  <p className="text-text-tertiary text-sm">Accra, Ghana</p>
-                </div>
-              </div>
-              <div className="flex gap-1 mb-4">
-                {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
-              </div>
-              <p className="text-text-secondary leading-relaxed">
-                "Finally, an app that understands young Africans! I bought Apple stock with just $20. This is the future."
-              </p>
-              <div className="mt-6 pt-6 border-t border-border-primary">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-accent-green font-bold flex items-center gap-1">
-                    <TrendingUp className="w-4 h-4" />
-                    +142% returns
-                  </span>
-                  <span className="text-text-tertiary">4 months</span>
-                </div>
-              </div>
-            </Card>
-
-            {/* Testimonial 3 */}
-            <Card className="bg-background-card border border-border-primary p-8 hover:border-primary transition-all hover:scale-105">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-3xl">
-                  👨🏽‍🎓
-                </div>
-                <div>
-                  <h4 className="text-white font-bold text-lg">Kwame Mensah</h4>
-                  <p className="text-text-tertiary text-sm">Nairobi, Kenya</p>
-                </div>
-              </div>
-              <div className="flex gap-1 mb-4">
-                {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
-              </div>
-              <p className="text-text-secondary leading-relaxed">
-                "As a student, I earn passive income from DeFi. Making 8% APY on my savings. Best financial decision ever!"
-              </p>
-              <div className="mt-6 pt-6 border-t border-border-primary">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-accent-green font-bold flex items-center gap-1">
-                    <TrendingUp className="w-4 h-4" />
-                    +8% APY
-                  </span>
-                  <span className="text-text-tertiary">Ongoing</span>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          {/* User avatars row - Real investors */}
-          <div className="mt-16 text-center">
-            <div className="flex items-center justify-center mb-4">
-              <div className="flex -space-x-4">
-                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
-                </div>
-                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
-                </div>
-                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
-                </div>
-                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
-                </div>
-                <div className="w-12 h-12 rounded-full border-4 border-black overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces" alt="Investor" className="w-full h-full object-cover" />
-                </div>
-              </div>
-            </div>
-            <p className="text-text-secondary">
-              <span className="text-primary font-bold text-2xl">10,000+</span> investors have already joined
+        {/* Engineering */}
+        <section id="engineering" className="scroll-mt-20 border-t border-[var(--r-line)]">
+          <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 md:py-28 lg:px-8">
+            <span className="m-label">Engineering</span>
+            <h2 className="r-display mt-5 text-3xl sm:text-4xl md:text-5xl">Models and tools, built in the open</h2>
+            <p className="mx-auto mt-5 max-w-xl text-[var(--r-ink-3)]">
+              Alongside each report we build the model or tool behind it, so the results can be checked and reused.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Waitlist Section */}
-      <section className="py-24 px-4 bg-gradient-to-b from-black via-primary/5 to-black">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-block mb-6">
-            <span className="bg-primary/20 text-primary px-6 py-2 rounded-full font-bold text-sm tracking-wide">
-              LAUNCHING SOON
-            </span>
-          </div>
-
-          <h2 className="font-outfit text-4xl md:text-6xl font-black mb-6">
-            <span className="text-white">JOIN THE</span>{' '}
-            <span className="text-primary">WAITLIST</span>
-          </h2>
-
-          <p className="text-lg md:text-xl text-text-secondary mb-12 max-w-2xl mx-auto">
-            Be among the first to experience the future of investing. Get early access and exclusive benefits.
-          </p>
-
-          <Link href="/waitlist">
-            <Button variant="primary" size="lg" className="text-xl px-12 py-6 font-bold shadow-glow">
-              JOIN WAITLIST
-              <ArrowRight className="ml-2 w-6 h-6" strokeWidth={3} />
-            </Button>
-          </Link>
-
-          {/* Benefits */}
-          <div className="grid md:grid-cols-3 gap-6 mt-16">
-            <div className="bg-background-card border border-border-primary rounded-xl p-6">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-white font-bold mb-2">Early Access</h3>
-              <p className="text-text-secondary text-sm">
-                Get priority access before public launch
-              </p>
+            <div className="mt-14 grid gap-4 text-left md:grid-cols-2">
+              {TOOLS.map((t, i) => {
+                const dark = i === 1;
+                return (
+                  <article key={t.title} className={`m-node ${dark ? "m-node-dark" : ""} !p-8`}>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className={`m-label ${dark ? "!border-white/25 !bg-white/5 !text-[#cdccc6]" : ""}`}>{t.status}</span>
+                      <span className="r-mono text-right opacity-60">{t.companion}</span>
+                    </div>
+                    <h3 className="r-display mt-8 text-2xl">{t.title}</h3>
+                    <p className="mt-3 leading-relaxed opacity-75">{t.body}</p>
+                    <ul className={`mt-6 space-y-2.5 border-t pt-5 text-[0.9375rem] ${dark ? "border-white/20" : "border-black/15"}`}>
+                      {t.points.map((p) => (
+                        <li key={p} className="flex gap-3">
+                          <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-6 text-sm opacity-60">{t.method}</p>
+                    {t.href && (
+                      <Link href={t.href} className="m-more mt-5">Open the tracker <ArrowRight className="h-4 w-4" aria-hidden /></Link>
+                    )}
+                  </article>
+                );
+              })}
             </div>
-            <div className="bg-background-card border border-border-primary rounded-xl p-6">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Gift className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-white font-bold mb-2">Exclusive Perks</h3>
-              <p className="text-text-secondary text-sm">
-                Special bonuses for early adopters
-              </p>
-            </div>
-            <div className="bg-background-card border border-border-primary rounded-xl p-6">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Bell className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-white font-bold mb-2">Launch Updates</h3>
-              <p className="text-text-secondary text-sm">
-                Stay informed about our progress
-              </p>
-            </div>
+            <div className="mt-10 flex justify-center"><Discover href="/waitlist">Follow progress</Discover></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA Section */}
-      <section className="py-32 px-4 bg-background-card">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Icon */}
-          <div className="flex justify-center mb-8">
-            <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center">
-              <Banknote className="w-12 h-12 text-primary" strokeWidth={2} />
-            </div>
+        {/* Nigeria */}
+        <section id="nigeria" className="scroll-mt-20 border-t border-[var(--r-line)]">
+          <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 md:py-28 lg:px-8">
+            <span className="m-label">Starting in Nigeria</span>
+            <h2 className="r-display mt-5 text-3xl sm:text-4xl md:text-5xl">Where the CBN, banks and crypto meet</h2>
+            <p className="mx-auto mt-5 max-w-xl text-[var(--r-ink-3)]">
+              Tokenized assets matter in emerging markets only if regulators, banks and new institutions can work with them.
+            </p>
+            <Trio items={NIGERIA} linkHref="/#agenda" />
           </div>
+        </section>
 
-          <h2 className="font-outfit text-5xl md:text-8xl font-black mb-8">
-            <span className="text-white">START</span>{' '}
-            <span className="text-primary">INVESTING</span>
-            <br />
-            <span className="text-white">TODAY</span>
-          </h2>
+        {/* Open by default: tabbed report viewer + three columns */}
+        <section id="method" className="scroll-mt-20 border-t border-[var(--r-line)]">
+          <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 md:py-28 lg:px-8">
+            <h2 className="r-display text-3xl sm:text-4xl md:text-5xl">Open by default, rigorous by design</h2>
+            <p className="mx-auto mt-5 max-w-xl text-[var(--r-ink-3)]">Every claim is sourced, every model is inspectable, every interest is disclosed.</p>
+            <div id="agenda" className="mt-14 scroll-mt-24 text-left">
+              <ReportViewer />
+            </div>
+            <Trio items={METHOD} linkHref="/about" />
+          </div>
+        </section>
 
-          <p className="text-xl md:text-2xl text-text-secondary mb-12 max-w-2xl mx-auto">
-            Join <span className="text-primary font-bold">10,000+</span> smart investors building wealth with STACKA
-          </p>
+        {/* Newsletter */}
+        <section className="border-t border-[var(--r-line)]">
+          <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-20 lg:px-8">
+            <h2 className="r-display text-3xl sm:text-4xl">Stay in the loop.<br />Get the latest from Stacka Research.</h2>
+            <div className="md:justify-self-end"><Newsletter /></div>
+          </div>
+        </section>
+      </main>
 
-          <Link href="/signup">
-            <Button variant="primary" size="lg" className="text-2xl px-16 py-8 font-black shadow-glow-lg">
-              GET STARTED FREE
-              <ArrowRight className="ml-3 w-8 h-8" strokeWidth={3} />
-            </Button>
-          </Link>
-
-          <p className="text-text-tertiary mt-8">
-            No credit card required • Start with just $10
-          </p>
-        </div>
-      </section>
-
-      <LandingFooter />
+      <ResearchFooter />
     </div>
   );
 }
