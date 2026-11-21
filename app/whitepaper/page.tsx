@@ -23,7 +23,7 @@ export default function WhitepaperPage() {
           <button type="button" onClick={() => window.print()} className="r-btn r-btn-ghost mt-4">Print or save as PDF</button>
         </div>
 
-        <article className="prose max-w-none pt-10 prose-headings:font-medium prose-a:text-[#111] prose-table:text-sm">
+        <article className="prose max-w-none pt-10 prose-headings:font-medium prose-a:text-[#111] prose-table:text-sm min-w-0 [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_pre]:overflow-x-auto [&_code]:break-words [&_p]:break-words [&_li]:break-words">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
             {whitepaperContent}
           </ReactMarkdown>

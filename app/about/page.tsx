@@ -21,8 +21,7 @@ export default function AboutPage() {
       <main>
         <section className="border-b border-[var(--r-line)]">
           <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
-            <span className="m-label">About</span>
-            <h1 className="r-display mt-4 text-4xl sm:text-5xl md:text-6xl">Research and engineering for how real-world finance moves onchain</h1>
+            <h1 className="r-display text-4xl sm:text-5xl md:text-6xl">Research and engineering for how real-world finance moves onchain</h1>
             <p className="mt-8 text-xl leading-relaxed text-[var(--r-ink-2)]">
               Stacka is an independent research and engineering project under Fonio Labs. It studies and models tokenized stocks, ETFs and money market funds, and how traditional finance and DeFi connect, starting with Nigeria and its regulators, banks and crypto-native institutions.
             </p>

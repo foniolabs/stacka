@@ -29,18 +29,19 @@ export default function ReportViewer() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div role="tablist" aria-label="Research agenda" className="flex gap-1.5 pl-2">
+      <div role="tablist" aria-label="Research agenda" className="flex gap-1.5 overflow-x-auto pl-2">
         {REPORTS.map((x, i) => (
           <button
             key={x.id}
             role="tab"
+            aria-label={`Report ${x.id}`}
             id={`tab-${x.id}`}
             aria-selected={i === active}
             aria-controls="report-panel"
             onClick={() => setActive(i)}
-            className={`r-mono inline-flex min-h-[40px] items-center gap-2 rounded-t-lg border border-b-0 border-[var(--r-line)] px-3.5 transition-colors ${i === active ? "bg-white text-[var(--r-ink)]" : "bg-white/40 text-[var(--r-ink-3)] hover:bg-white/70"}`}
+            className={`r-mono inline-flex min-h-[40px] shrink-0 items-center gap-1.5 rounded-t-lg border border-b-0 border-[var(--r-line)] px-2.5 transition-colors sm:gap-2 sm:px-3.5 ${i === active ? "bg-white text-[var(--r-ink)]" : "bg-white/40 text-[var(--r-ink-3)] hover:bg-white/70"}`}
           >
-            <Folder className="h-3.5 w-3.5" aria-hidden /> Report {x.id}
+            <Folder className="h-3.5 w-3.5" aria-hidden /> <span className="hidden sm:inline">Report&nbsp;</span>{x.id}
           </button>
         ))}
       </div>
@@ -59,7 +60,7 @@ export default function ReportViewer() {
         </ol>
         <div className="mt-4 flex justify-end">
           <Link href="/waitlist" className="r-mono inline-flex items-center gap-1.5 text-[var(--r-ink-3)] transition-colors hover:text-[var(--r-ink)]">
-            Get this report <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+            Get notified <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
         </div>
       </div>

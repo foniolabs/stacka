@@ -39,8 +39,7 @@ export default function DisclaimerPage() {
       <ResearchHeader />
       <main>
         <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
-          <span className="m-label">Legal</span>
-          <h1 className="r-display mt-6 text-4xl sm:text-5xl">Disclaimer</h1>
+          <h1 className="r-display text-4xl sm:text-5xl">Disclaimer</h1>
           <p className="r-mono mt-4 text-[var(--r-ink-3)]">Last updated: November 2026</p>
           <div className="mt-12 space-y-8">
             {SECTIONS.map((s) => (

@@ -38,7 +38,7 @@ export default function TrackerPage() {
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--r-ink-2)]">
               A dated record of CBN and SEC Nigeria rules on tokenized securities, funds and stablecoins. Every entry shows its status, the section it comes from, how well it is verified and a link to the source.
             </p>
-            <p className="r-mono mt-6 text-[var(--r-ink-3)]">As of {AS_OF_LABEL} · Companion to report 03</p>
+            <p className="r-mono mt-6 text-[var(--r-ink-3)]">As of {AS_OF_LABEL}</p>
 
             <dl className="mt-10 grid grid-cols-2 divide-x divide-y divide-[var(--r-line)] border border-[var(--r-line)] sm:grid-cols-4 sm:divide-y-0">
               {stats.map((s) => (
